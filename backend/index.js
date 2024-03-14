@@ -1,9 +1,23 @@
-import express from 'express'
-const app = express()
+import express from "express";
+const app = express();
 
-app.get("/api",(req, res)=>{
-    console.log("foo")
-    res.json({message: "Hi"})
-})
+let count = 0;
 
-app.listen(5000, ()=> console.log("start"))
+app.get("/api", (req, res) => {
+  console.log(count);
+  count++;
+  res.json({
+    message: "Hello World!",
+  });
+});
+
+app.get("/api/data", (req, res) => {
+  console.log(count);
+  count++;
+  res.json({
+    message: "Hello World!",
+    data: count,
+  });
+});
+
+app.listen(5000, () => console.log("start"));

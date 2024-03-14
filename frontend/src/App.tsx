@@ -1,20 +1,11 @@
-import { useEffect, useState } from 'react'
+import { ComponentPromise } from "./components/ComponentPromise";
 
 function App() {
-  const [user, setUser] = useState([{}])
-
-  useEffect(()=>{
-    fetch("/api").then(
-      (response) => response.json()
-      ).then(data => {
-        setUser(data)
-      })
-  },[]);
   return (
     <>
-      <h1>{user.message}</h1>
+      <ComponentPromise />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
