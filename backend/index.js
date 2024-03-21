@@ -20,4 +20,18 @@ app.get("/api/data", (req, res) => {
   });
 });
 
+app.get("/api/data", (req, res) => {
+  res.json({
+    id: 1,
+    firstName: "jong",
+  });
+});
+// export type User = {
+//   id: number;
+//   firstName: string;
+//   lastName: string;
+//   surname: string;
+//   email: string;
+//   phone: string;
+// };
 app.listen(5000, () => console.log("start"));
