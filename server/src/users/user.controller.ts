@@ -7,7 +7,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from './user.service';
 import { User } from './user.model';
 import { CreateUserDto } from './CreateUser.dto';
 

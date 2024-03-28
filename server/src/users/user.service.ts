@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './user.model';
 import { CreateUserDto } from './CreateUser.dto';
+import { FindOptions } from 'sequelize';
 
 @Injectable()
 export class UsersService {
@@ -14,14 +15,16 @@ export class UsersService {
     return this.userModel.findAll();
   }
 
-  findOne(id: number): Promise<User> {
+  async findOne(id: number): Promise<User> {
     return this.userModel.findOne({
       where: {
         id,
       },
     });
   }
-
+  async findOneByConfig(config: FindOptions): Promise<User> {
+    return this.userModel.findOne(config);
+  }
   async remove(id: number): Promise<void> {
     const user = await this.findOne(id);
     await user.destroy();
