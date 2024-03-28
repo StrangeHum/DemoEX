@@ -12,6 +12,7 @@ import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { AuthUserDto } from './dto/auth-user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -39,7 +40,12 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   async loginFoo(@Request() req) {
-    // return req.user;
     return this.authService.login(req.user);
+  }
+
+  @Get('jwt')
+  @UseGuards(JwtAuthGuard)
+  async authJWT(@Request() req) {
+    return req.user;
   }
 }

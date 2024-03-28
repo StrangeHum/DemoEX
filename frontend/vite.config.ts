@@ -12,11 +12,11 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 3001,
     //https://medium.com/@faazfajib7/setup-proxy-in-vite-react-2eb1454bff62
     proxy: {
       "/api": {
-        target: "http://localhost:5000/api",
+        target: "http://localhost:3000/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

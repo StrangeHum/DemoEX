@@ -9,9 +9,20 @@ export const ComponentPromise = () => {
   //     .then((data) => setUser(data.data));
   // }, []);
   const GetData = () => {
-    fetch("/api/data")
-      .then((res) => res.json())
-      .then((data) => setUser(data.data));
+    fetch("http://localhost:3000/auth/login", {
+      method: "post",
+      headers: new Headers({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        login: "lo",
+        password: "pass",
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => setUser(data.token));
   };
   return (
     <div>
