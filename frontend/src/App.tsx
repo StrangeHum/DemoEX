@@ -1,9 +1,10 @@
 import { ComponentPromise } from "./components/ComponentPromise";
+import { LoginPage } from "./pages/login";
 
 function App() {
   return (
     <>
-      <ComponentPromise />
+      <LoginPage />
     </>
   );
 }
