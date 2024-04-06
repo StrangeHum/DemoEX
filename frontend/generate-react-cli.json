@@ -4,10 +4,18 @@
   "testLibrary": "Testing Library",
   "component": {
     "default": {
+      "customTemplates": {
+        "component": "src/templates/default/TemplateName.tsx",
+        "style": "src/templates/default/TemplateName.module.scss",
+        "story": "src/templates/default/TemplateName.stories.tsx",
+        "index": "src/templates/default/index.ts"
+      },
       "path": "src/components",
       "withStyle": true,
-      "withTest": false,
       "withStory": true,
+      "withIndex": true,
+
+      "withTest": false,
       "withLazy": false
     }
   },

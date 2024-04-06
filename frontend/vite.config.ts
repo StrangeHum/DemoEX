@@ -7,8 +7,10 @@ export default defineConfig({
   base: "./",
   resolve: {
     alias: {
-      src: "/src",
-      components: "/src/components",
+      "@src": "/src",
+      "@components": "/src/components",
+      "@styles": "/src/styles",
+      "@utils": "/src/styles/utils",
     },
   },
   server: {

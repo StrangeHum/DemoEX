@@ -1,10 +1,6 @@
-import React, {
-  FormEventHandler,
-  JSXElementConstructor,
-  useEffect,
-} from "react";
-import { GetToken } from "src/components/hooks/useAuth";
-import LoginForm from "src/components/loginForm";
+import { useEffect } from "react";
+import { GetToken } from "@src/hooks/useAuth";
+import { LoginForm } from "@src/components/loginForm";
 
 export const LoginPage = () => {
   const token = async () => {

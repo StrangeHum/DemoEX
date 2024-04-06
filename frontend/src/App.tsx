@@ -1,12 +1,29 @@
-import { ComponentPromise } from "./components/ComponentPromise";
-import { LoginPage } from "./pages/login";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-function App() {
+import { LoginPage } from "./pages/login";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+import { MainPage } from "./pages/MainPage";
+
+export function App() {
   return (
     <>
-      <LoginPage />
+      <Header />
+      <RouterProvider router={router} />
+      <Footer />
     </>
   );
 }
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+]);
 
 export default App;
