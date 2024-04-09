@@ -1,3 +1,21 @@
 .header {
-  background-color: blue;
+  background-color: #f5f5f5;
+  padding: 15px;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+.nav .active {
+  color: #ff005d;
+}
+.active {
+  color: #ff005d;
 }
