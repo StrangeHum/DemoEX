@@ -1,6 +1,6 @@
 import cn from "classnames";
 import styles from "./Header.module.scss";
-import { Link, NavLink, NavLinkProps } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export type HeaderProps = {};
 

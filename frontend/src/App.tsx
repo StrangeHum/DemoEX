@@ -1,50 +1,25 @@
-import {
-  Route,
-  RouterProvider,
-  Routes,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { LoginPage } from "./pages/login";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
+import { Signin } from "./pages/Signin";
 
+//TODO: Тепловая карта https://www.youtube.com/watch?v=Y7tpjR2dLOQ
 export function App() {
   return (
     <>
       <Header />
-      {/* <RouterProvider router={router} /> */}
       <Routes>
         <Route index path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signin" element={<Signin />} />
         <Route path="/*" element={<h1>404 Not Found</h1>} />
       </Routes>
-      {/* <RouterProvider router={router} /> */}
       <Footer />
     </>
   );
 }
-
-// const router = createBrowserRouter(
-//   createRoutesFromElements(
-//     <Route path="/" element={}>
-//       <Route index element={<Home />} />
-//       <Route path="/login" element={<LoginPage />} />,
-//     </Route>
-//   )
-// );
-
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <MainPage />,
-//   },
-//   {
-//     path: "/login",
-//     element: <LoginPage />,
-//   },
-// ]);
 
 export default App;

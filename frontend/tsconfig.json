@@ -25,6 +25,7 @@
     "paths": {
       "@src/*": ["src/*"],
       "@components/*": ["src/components/*"],
+      "@types/*": ["src/types/*"],
       "@styles/*": ["src/styles/*"],
       "@styles/utils/*": ["src/styles/utils/*"]
     }

@@ -4,13 +4,11 @@
 @import "./base/typography";
 @import "./base/colors.scss";
 
-// Layout
-// @import "layout/header";
-// @import "layout/footer";
+#root {
+  margin: 0 auto;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
 
-// Components
-
-// Utils
-
-@import "./base/App.scss";
 @import "./base/index.scss";

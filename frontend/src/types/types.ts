@@ -6,6 +6,13 @@ export type User = {
   email: string;
   phone: string;
 };
+
+export type AuthData = {
+  idUser: number;
+  login: string;
+  password: string;
+};
+
 export type Order = {
   id: number;
   numberCar: string;
