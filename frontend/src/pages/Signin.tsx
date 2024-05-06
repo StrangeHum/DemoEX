@@ -1,27 +1,16 @@
 import { Controller, useForm } from "react-hook-form";
-import styles from "./index.module.scss";
-import classNames from "classnames";
-import { User, AuthData } from "@types/types.ts";
+import { User, AuthData } from "@src/types";
 import { Button, TextField } from "@mui/material";
+import { FieldValidation } from "../components/validation/FieldValidation";
+
+import { ButtonNavigateToLogin } from "@src/components/ButtonNavigateToLogin";
 
 export type LoginFormFields = User & AuthData; //TODO: Создать отдельный тип для полей
-
-//TODO: валидация для email
-const FieldValidation = {
-  required: "Обязательно для заполнения",
-  validate: (value: string) => {
-    if (value.match(/[а-яА-Я]/)) {
-      return "Русские символы недопустимы";
-    }
-    return true;
-  },
-};
 
 export const Signin = () => {
   const methods = useForm<LoginFormFields>({ mode: "onBlur" });
 
   const {
-    register,
     control,
     formState: { errors, isValid },
     handleSubmit,
@@ -36,22 +25,6 @@ export const Signin = () => {
   return (
     <div>
       <form onSubmit={onSubmit}>
-        <span>Регистрация</span>
-        <Controller
-          rules={FieldValidation}
-          name="email"
-          control={control}
-          render={({ field: { onChange, onBlur } }) => (
-            <TextField
-              label="email"
-              type="email"
-              onBlur={onBlur}
-              onChange={onChange}
-              error={!!errors.email?.message}
-              helperText={errors.email?.message}
-            />
-          )}
-        />
         <Controller
           rules={FieldValidation}
           name="login"
@@ -67,7 +40,38 @@ export const Signin = () => {
             />
           )}
         />
-        {/* <input type="submit"></input> */}
+
+        <Controller
+          rules={FieldValidation}
+          name="password"
+          control={control}
+          render={({ field: { onChange, onBlur } }) => (
+            <TextField
+              label="Пароль"
+              type="password"
+              onChange={onChange}
+              onBlur={onBlur}
+              error={!!errors.password?.message}
+              helperText={errors.password?.message}
+            />
+          )}
+        />
+        <Controller
+          rules={FieldValidation}
+          name="email"
+          control={control}
+          render={({ field: { onChange, onBlur } }) => (
+            <TextField
+              label="email"
+              type="email"
+              onBlur={onBlur}
+              onChange={onChange}
+              error={!!errors.email?.message}
+              helperText={errors.email?.message}
+            />
+          )}
+        />
+
         <Button
           disabled={!isValid}
           type="submit"
@@ -76,6 +80,7 @@ export const Signin = () => {
         >
           Зарегистрироваться
         </Button>
+        <ButtonNavigateToLogin />
       </form>
     </div>
   );

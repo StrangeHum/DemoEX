@@ -1,15 +1,15 @@
-import { useEffect } from "react";
-import { GetToken } from "@src/hooks/useAuth";
+import { GetToken } from "@src/components/hooks/useAuth";
 import { LoginForm } from "@src/components/loginForm";
+import { LoadingButton } from "@mui/lab";
+import { useState } from "react";
+
+import { AuthData } from "@src/types";
 
 export const LoginPage = () => {
   const token = async () => {
     console.log(await GetToken({ login: "log", password: "pass" }));
   };
 
-  useEffect(() => {
-    token();
-  }, []);
   return (
     <>
       <LoginForm
@@ -17,6 +17,7 @@ export const LoginPage = () => {
           console.log(data);
         }}
       />
+      {/* TODO: Кнопка загрузки ответа авторизации LoadingButton*/}
     </>
   );
 };

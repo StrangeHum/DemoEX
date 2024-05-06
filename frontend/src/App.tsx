@@ -1,23 +1,17 @@
-import { Route, Routes } from "react-router-dom";
-
-import { LoginPage } from "./pages/login";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
-import { Home } from "./pages/Home";
-import { Signin } from "./pages/Signin";
+import { BrowserRouter, RouterProvider } from "react-router-dom";
+import { router } from "./router/router";
+import Likes from "./components/testRedux";
+import { useActions } from "./components/hooks/useActions";
+import { useAppDispatch } from "./components/hooks/redux";
+import { setFirstName } from "./redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 //TODO: Тепловая карта https://www.youtube.com/watch?v=Y7tpjR2dLOQ
 export function App() {
   return (
     <>
-      <Header />
-      <Routes>
-        <Route index path="/" element={<Home />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/*" element={<h1>404 Not Found</h1>} />
-      </Routes>
-      <Footer />
+      <RouterProvider router={router} />
+      {/* <Likes /> */}
     </>
   );
 }

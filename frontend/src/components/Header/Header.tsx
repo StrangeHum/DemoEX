@@ -1,18 +1,20 @@
 import cn from "classnames";
 import styles from "./Header.module.scss";
 import { NavLink } from "react-router-dom";
+import ReactIcon from "@src/assets/react.svg";
 
-export type HeaderProps = {};
+export const Header = () => {
+  const isAuth = false;
 
-export const Header = ({}: HeaderProps) => {
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
         <NavLinkItem to="/">Home</NavLinkItem>
-        <NavLinkItem to="/login">Авторизация</NavLinkItem>
-        <NavLinkItem to="/statements">Мои заявления</NavLinkItem>
-        <NavLinkItem to="/create">Создать заявление</NavLinkItem>
-        <NavLinkItem to="/admin">Панель администратора</NavLinkItem>
+        {!isAuth && (
+          <NavLink to="/login">
+            <img src={ReactIcon} alt="foo" />
+          </NavLink>
+        )}
       </nav>
     </header>
   );

@@ -1,87 +1,136 @@
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import styles from "./index.module.scss";
-import classNames from "classnames";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Stack,
+  TextField,
+} from "@mui/material";
+import { FC, useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { FieldValidation } from "../validation/FieldValidation";
+import { useTryAuthMutation } from "@src/redux/api/auth.api";
 
-export type formFields = {
-  login: HTMLInputElement;
-  password: HTMLInputElement;
-  rememberMe: HTMLInputElement;
-};
+import { ButtonNavigateToSignup } from "../ButtonNavigateToSignup";
 
+//TODO Вынести типы в файл
 export interface LoginFormProps {
   onSubmit: (data: LoginFormFields) => void;
 }
 
 export type LoginFormFields = {
+  //FIXME AuthData & {значения...}
   login: string;
   password: string;
   rememberMe: boolean;
 };
 
 export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
+  const [loginUser, { data, isSuccess, isLoading, isError }] =
+    useTryAuthMutation();
+
+  const methods = useForm<LoginFormFields>({
+    defaultValues: {
+      login: "",
+      password: "",
+      rememberMe: false,
+    },
+    mode: "onBlur",
+  });
+
   const {
-    register,
     formState: { errors, isValid },
     handleSubmit,
-    reset,
-  } = useForm<LoginFormFields>({ mode: "onBlur" });
+    control,
+  } = methods;
 
-  const onSubmit = (data, e) => {
-    e.preventDefault();
+  const onSubmit = handleSubmit(async (data, e) => {
+    // e?.preventDefault();
     console.log(data);
-    reset();
-  };
+    loginUser({
+      idUser: 1,
+      login: data.login,
+      password: data.password,
+      // rememberMe: data.rememberMe, //TODO: Remember
+    });
+  });
+
+  useEffect(() => {
+    //TODO: Сорханение в local store
+    if (isSuccess) {
+      console.log(data);
+    }
+  }, [isSuccess]);
+
+  if (isError) {
+    return <div>error</div>;
+  }
+
+  if (isLoading) {
+    return <div>Load...</div>;
+  }
 
   return (
-    <div className={styles.LoginForm}>
-      loginPage
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>
-          login
-          <input
-            className={classNames(styles.input, styles.bold)}
-            {...register("login", {
-              required: {
-                value: true,
-                message: "login is required",
-              },
-            })}
-            type="text"
-            placeholder="username"
+    <div>
+      <form onSubmit={onSubmit}>
+        {/* TODO: Валидация логина */}
+        <Stack>
+          <Controller
+            rules={FieldValidation}
+            control={control}
+            name="login"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="логин"
+                type="text"
+                // onBlur={onBlur}
+                // onChange={onChange}
+                error={!!errors.login?.message}
+                helperText={errors.login?.message}
+              />
+            )}
           />
-        </label>
 
-        <div className={styles.error}>
-          {errors?.login && <p>{errors?.login?.message || "Error!"}</p>}
-        </div>
-
-        <label>
-          password
-          <input
-            {...register("password", {
-              required: {
-                value: true,
-                message: "password is required",
-              },
-            })}
-            type="password"
-            placeholder="password"
+          <Controller
+            rules={FieldValidation}
+            control={control}
+            name="password"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="пароль"
+                type="text"
+                // onBlur={onBlur}
+                // onChange={onChange}
+                error={!!errors.password?.message}
+                helperText={errors.password?.message}
+              />
+            )}
           />
-        </label>
+          <FormControlLabel
+            label="Запомнить меня"
+            control={
+              <Controller
+                control={control}
+                name="rememberMe"
+                render={({ field: { value, onBlur, onChange } }) => (
+                  <Checkbox checked={value} onChange={onChange} />
+                )}
+              />
+            }
+          ></FormControlLabel>
 
-        <div className={styles.error}>
-          {errors?.password && <p>{errors?.password?.message || "Error!"}</p>}
-        </div>
+          <Button
+            type="submit"
+            disabled={!isValid}
+            fullWidth={true}
+            variant="contained"
+          >
+            Войти
+          </Button>
 
-        <label>
-          rememberMe
-          <input type="checkbox" name="rememberMe" />
-        </label>
-
-        <button type="submit" disabled={!isValid}>
-          Login
-        </button>
+          <ButtonNavigateToSignup />
+        </Stack>
       </form>
     </div>
   );
