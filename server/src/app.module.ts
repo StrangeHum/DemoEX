@@ -5,6 +5,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
 
+// import { userAuthDataModel } from './users/userAuthData.model';
+import { OrdersService } from './orders/orders.service';
+import { OrdersModule } from './orders/orders.module';
+
 @Module({
   imports: [
     SequelizeModule.forRoot({
@@ -13,17 +17,20 @@ import { AuthModule } from './auth/auth.module';
       port: 3306,
       username: 'root',
       password: 'StrangeHoney',
-      database: 'violationsno',
+      database: 'violationsnodev', //violationsno
       autoLoadModels: true,
       synchronize: true,
       define: {
         timestamps: false,
       },
+
+      // models: [UserAuthData, User],
     }),
     UsersModule,
     AuthModule,
+    OrdersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, OrdersService],
 })
 export class AppModule {}

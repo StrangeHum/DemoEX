@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { jwtConstants } from './constants';
-import { IUser } from 'src/types/types';
+import { DataOnJWTToken, IUser } from 'src/types/types';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -15,7 +15,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  //Оно работет, но не понимаю почему
   async validate(user: IUser) {
-    return { id: user.id, login: user.login };
+    return { ...user };
   }
 }

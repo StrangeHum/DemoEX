@@ -1,28 +1,46 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { User } from './user.model';
-import { CreateUserDto } from './CreateUser.dto';
-import { FindOptions } from 'sequelize';
+import { UserModel } from './user.model';
+import { FindOptions, Model, where } from 'sequelize';
+import { UserAuthModel } from './userAuthData.model';
+import { CreateUserDto } from 'src/types/dto/CreateUser.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User)
-    private userModel: typeof User,
+    @InjectModel(UserModel)
+    private userModel: typeof UserModel,
+    @InjectModel(UserAuthModel)
+    private userAuthModel: typeof UserAuthModel,
   ) {}
 
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<UserModel[]> {
     return this.userModel.findAll();
   }
+  async findOneByLogin(login: string): Promise<UserAuthModel> {
+    var userData = await this.userAuthModel.findOne({
+      where: { login: login },
+      include: [UserModel],
+    });
+    return userData;
+  }
+  async findAllData(): Promise<any> {
+    var user = await this.userModel.findAll({ include: [UserAuthModel] });
 
-  async findOne(id: number): Promise<User> {
+    var userAuthData = await this.userAuthModel.findAll({
+      include: [UserModel],
+    });
+
+    return userAuthData;
+  }
+  async findOne(id: number): Promise<UserModel> {
     return this.userModel.findOne({
       where: {
         id,
       },
     });
   }
-  async findOneByConfig(config: FindOptions): Promise<User> {
+  async findOneByConfig(config: FindOptions): Promise<UserModel> {
     return this.userModel.findOne(config);
   }
   async remove(id: number): Promise<void> {
@@ -30,16 +48,30 @@ export class UsersService {
     await user.destroy();
   }
 
-  async create(dto: CreateUserDto): Promise<User> {
-    const user = await this.userModel.create<User>({
-      firstName: dto.firstName,
-      secondName: dto.secondName,
-      surname: dto.surname,
-      login: dto.login,
-      email: dto.email,
-      password: dto.password,
-      phone: dto.phone,
+  async create({
+    user: userData,
+    authData,
+  }: CreateUserDto): Promise<UserModel> {
+    const userAuthData = await this.userAuthModel.create<UserAuthModel>({
+      login: authData.login,
+      password: authData.password,
     });
+
+    const user = await this.userModel.create<UserModel>({
+      firstName: userData.firstName,
+      secondName: userData.secondName,
+      surname: userData.surname,
+      email: userData.email,
+      phone: userData.phone,
+      isAdmin: userData.isAdmin,
+      userAuthData: userAuthData,
+    });
+
+    userAuthData.userId = user.id;
+
+    await user.save();
+    await userAuthData.save();
+
     return user;
   }
 }

@@ -1,3 +1,6 @@
+/**
+ * Данные о пользователе
+ */
 export class UserDataDto {
   id: number;
   firstName: string;
