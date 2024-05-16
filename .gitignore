@@ -1,6 +1,8 @@
 #SHCustom
 src/shConfigEmail.ts
 
+uploads
+
 # Logs
 logs
 *.log

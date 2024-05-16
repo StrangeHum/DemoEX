@@ -1,13 +1,5 @@
-import {
-  Column,
-  Model,
-  Table,
-  IsEmail,
-  HasOne,
-  HasMany,
-} from 'sequelize-typescript';
+import { Column, Model, Table, HasOne } from 'sequelize-typescript';
 import { UserAuthModel } from './userAuthData.model';
-import { HasOneSetAssociationMixin } from 'sequelize';
 
 @Table({ tableName: 'user' })
 export class UserModel extends Model<UserModel> {

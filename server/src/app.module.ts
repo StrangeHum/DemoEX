@@ -5,9 +5,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
 
-// import { userAuthDataModel } from './users/userAuthData.model';
-import { OrdersService } from './orders/orders.service';
 import { OrdersModule } from './orders/orders.module';
+import { ImageModule } from './image/image.module';
 
 @Module({
   imports: [
@@ -27,10 +26,11 @@ import { OrdersModule } from './orders/orders.module';
       // models: [UserAuthData, User],
     }),
     UsersModule,
-    AuthModule,
     OrdersModule,
+    AuthModule,
+    ImageModule,
   ],
   controllers: [AppController],
-  providers: [AppService, OrdersService],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -1,4 +1,11 @@
-import { Column, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import {
+  Column,
+  HasMany,
+  Model,
+  PrimaryKey,
+  Table,
+} from 'sequelize-typescript';
+import { OrderModel } from './order-model';
 
 @Table({ tableName: 'statusorder' })
 export class StatusOrderModel extends Model<StatusOrderModel> {
@@ -7,5 +14,6 @@ export class StatusOrderModel extends Model<StatusOrderModel> {
     primaryKey: true,
   })
   id: number;
+
   @Column title: string;
 }

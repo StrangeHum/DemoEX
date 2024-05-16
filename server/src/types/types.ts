@@ -22,3 +22,17 @@ export type UserType = {
   readonly phone: string;
   readonly isAdmin: boolean; //TODO: Server: добавить несколько ролей
 };
+
+export type OrderType = {
+  id: number;
+  userId: number;
+  description: string;
+  numberCar: string;
+  address: string;
+  status: OrderStatusType;
+};
+
+export type OrderStatusType = {
+  id: number;
+  title: string;
+};
