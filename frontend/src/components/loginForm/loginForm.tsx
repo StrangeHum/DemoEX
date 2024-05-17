@@ -44,10 +44,8 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
   } = methods;
 
   const onSubmit = handleSubmit(async (data, e) => {
-    // e?.preventDefault();
     console.log(data);
     loginUser({
-      idUser: 1,
       login: data.login,
       password: data.password,
       // rememberMe: data.rememberMe, //TODO: Remember

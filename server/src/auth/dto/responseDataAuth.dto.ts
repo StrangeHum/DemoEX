@@ -1,4 +1,4 @@
-import { UserType } from '../types';
+import { UserType } from 'src/types/types';
 
 export default class responseDataAuth {
   token: string;

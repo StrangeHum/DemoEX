@@ -13,8 +13,9 @@ import { ImageService } from './image.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { Response } from 'express';
-
+import { ApiTags } from '@nestjs/swagger';
 @Controller('images')
+@ApiTags('images')
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}
 

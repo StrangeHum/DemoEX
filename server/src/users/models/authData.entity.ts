@@ -5,7 +5,8 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { UserModel } from './user.model';
+import { UserModel } from './user.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Table({ tableName: 'userAuth' })
 export class UserAuthModel extends Model<UserAuthModel> {
@@ -13,6 +14,7 @@ export class UserAuthModel extends Model<UserAuthModel> {
     autoIncrement: true,
     primaryKey: true,
   })
+  @ApiHideProperty()
   id: number;
 
   // user: UserModel;
@@ -22,7 +24,6 @@ export class UserAuthModel extends Model<UserAuthModel> {
   @Column
   userId!: number;
 
-  //FIXME: сделсь возможна ошибка, связь 1 к многим
   @BelongsTo(() => UserModel) user: UserModel;
 
   @Column

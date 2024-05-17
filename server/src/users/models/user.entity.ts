@@ -1,5 +1,6 @@
 import { Column, Model, Table, HasOne } from 'sequelize-typescript';
-import { UserAuthModel } from './userAuthData.model';
+import { UserAuthModel } from './authData.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Table({ tableName: 'user' })
 export class UserModel extends Model<UserModel> {
@@ -7,6 +8,7 @@ export class UserModel extends Model<UserModel> {
     autoIncrement: true,
     primaryKey: true,
   })
+  @ApiHideProperty()
   id: number;
 
   @Column firstName: string;

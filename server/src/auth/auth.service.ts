@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersService as UserService } from 'src/users/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserType } from 'src/types/types';
-import responseDataAuth from 'src/types/dto/responseDataAuth';
+import responseDataAuth from './dto/responseDataAuth.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +16,7 @@ export class AuthService {
 
     if (userAuthData && userAuthData.password === password) {
       const result: UserType = userAuthData.user;
-      return result;
+      return userAuthData.user;
     }
 
     return null;

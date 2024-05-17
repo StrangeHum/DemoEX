@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { ImageModel } from './image.model';
+import { ImageModel } from './image.entity';
 
 @Injectable()
 export class ImageService {

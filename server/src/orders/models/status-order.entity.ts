@@ -5,7 +5,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { OrderModel } from './order-model';
+import { OrderModel } from './order.entity';
 
 @Table({ tableName: 'statusorder' })
 export class StatusOrderModel extends Model<StatusOrderModel> {

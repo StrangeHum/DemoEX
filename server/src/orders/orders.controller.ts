@@ -9,14 +9,17 @@ import {
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
+import createOrderDTO from './dto/createOrder.dto';
 
 @Controller('orders')
+@ApiTags('orders')
 export class OrdersController {
   constructor(private orderService: OrdersService) {}
 
   @Post('create')
-  async createOrder() {
-    return this.orderService.create();
+  async createOrder(@Body() body: createOrderDTO) {
+    return this.orderService.create(body);
   }
   @Get('findAll')
   async findAllOrdersByUserId(@Body() body: { userId: number }) {

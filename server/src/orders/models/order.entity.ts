@@ -6,8 +6,8 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { StatusOrderModel } from './status-orderModel';
-import { UserModel } from 'src/users/user.model';
+import { StatusOrderModel } from './status-order.entity';
+import { UserModel } from 'src/users/models/user.entity';
 
 @Table({ tableName: 'order' })
 export class OrderModel extends Model<OrderModel> {

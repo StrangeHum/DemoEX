@@ -21,7 +21,7 @@ export const authApi = createApi({
 
   endpoints: (builder) => ({
     tryAuth: builder.mutation<
-      { id: number; login: string; token: string },
+      { login: string; token: string },
       AuthData
     >({
       query: (data) => ({
