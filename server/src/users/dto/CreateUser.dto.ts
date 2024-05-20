@@ -1,11 +1,11 @@
-import { IsEmail } from 'sequelize-typescript';
-import { UserAuthData, UserType } from '../../types/types';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserModel } from '../models/user.entity';
+import { UserAuthModel } from '../models/authData.entity';
 
 export class CreateUserDto {
   @ApiProperty({ description: 'Данные пользователя' })
-  user: UserType;
+  user: UserModel;
 
   @ApiProperty({ description: 'Данные для авторизации пользователя' })
-  authData: UserAuthData;
+  authData: UserAuthModel;
 }

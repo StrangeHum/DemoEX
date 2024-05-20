@@ -4,9 +4,11 @@ import {
   Table,
   ForeignKey,
   BelongsTo,
+  DataType,
 } from 'sequelize-typescript';
 import { UserModel } from './user.entity';
 import { ApiHideProperty } from '@nestjs/swagger';
+import { UserRole } from 'src/types/types';
 
 @Table({ tableName: 'userAuth' })
 export class UserAuthModel extends Model<UserAuthModel> {
@@ -17,18 +19,22 @@ export class UserAuthModel extends Model<UserAuthModel> {
   @ApiHideProperty()
   id: number;
 
-  // user: UserModel;
-  // @ForeignKey(() => UserModel)
-  // user: UserModel;
+  @BelongsTo(() => UserModel) user: UserModel;
+
   @ForeignKey(() => UserModel)
   @Column
   userId!: number;
-
-  @BelongsTo(() => UserModel) user: UserModel;
 
   @Column
   login: string;
 
   @Column
   password: string;
+
+  @Column({
+    type: DataType.ENUM,
+    values: Object.keys(UserRole),
+    allowNull: false,
+  })
+  role: UserRole;
 }

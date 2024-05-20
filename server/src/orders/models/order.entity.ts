@@ -2,12 +2,14 @@ import {
   BelongsTo,
   Column,
   ForeignKey,
+  HasMany,
   HasOne,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { StatusOrderModel } from './status-order.entity';
 import { UserModel } from 'src/users/models/user.entity';
+import { FileModel } from './file.entity';
 
 @Table({ tableName: 'order' })
 export class OrderModel extends Model<OrderModel> {
@@ -36,4 +38,7 @@ export class OrderModel extends Model<OrderModel> {
   @Column numberCar: string;
 
   @Column address: string;
+
+  @HasMany(() => FileModel)
+  files: FileModel[];
 }

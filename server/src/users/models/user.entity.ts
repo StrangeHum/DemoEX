@@ -20,17 +20,9 @@ export class UserModel extends Model<UserModel> {
   @HasOne(() => UserAuthModel)
   userAuthData: UserAuthModel;
 
-  // setUserAuthData: HasOneSetAssociationMixin<
-  //   UserAuthModel,
-  //   UserAuthModel['user']
-  // >;
-
   @Column
   email: string;
 
   @Column
   phone: string;
-
-  @Column({ defaultValue: true })
-  isAdmin: boolean;
 }

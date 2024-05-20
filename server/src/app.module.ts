@@ -22,13 +22,11 @@ import { ImageModule } from './image/image.module';
       define: {
         timestamps: false,
       },
-
-      // models: [UserAuthData, User],
     }),
     UsersModule,
     OrdersModule,
     AuthModule,
-    ImageModule,
+    // ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

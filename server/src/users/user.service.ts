@@ -4,6 +4,7 @@ import { UserModel } from './models/user.entity';
 import { FindOptions, Model, where } from 'sequelize';
 import { UserAuthModel } from './models/authData.entity';
 import { CreateUserDto } from 'src/users/dto/CreateUser.dto';
+import { UserRole } from 'src/types/types';
 
 @Injectable()
 export class UsersService {
@@ -55,6 +56,7 @@ export class UsersService {
     const userAuthData = await this.userAuthModel.create<UserAuthModel>({
       login: authData.login,
       password: authData.password,
+      role: UserRole.User,
     });
 
     const user = await this.userModel.create<UserModel>({
@@ -63,7 +65,6 @@ export class UsersService {
       surname: userData.surname,
       email: userData.email,
       phone: userData.phone,
-      isAdmin: userData.isAdmin,
       userAuthData: userAuthData,
     });
 
