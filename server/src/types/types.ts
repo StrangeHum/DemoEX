@@ -1,8 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class dataOnToken {
-  @ApiProperty() id: string;
+  @ApiProperty()
+  id: number;
   @ApiProperty() role: UserRole;
+}
+
+export class userDataFromToken {
+  @ApiProperty()
+  user: dataOnToken;
 }
 
 export enum UserRole {

@@ -4,6 +4,8 @@ import { OrderModel } from './models/order.entity';
 import { StatusOrderModel } from './models/status-order.entity';
 import createOrderDTO from './dto/createOrder.dto';
 import { FileModel } from './models/file.entity';
+import { UserModel } from 'src/users/models/user.entity';
+import { UploadFileDTO } from './dto/uploadFile.dto';
 
 @Injectable()
 export class OrdersService {
@@ -15,16 +17,14 @@ export class OrdersService {
     @InjectModel(FileModel)
     private readonly imageModel: typeof FileModel,
   ) {}
-  async create(data: createOrderDTO): Promise<OrderModel> {
-    const { order: orderData, user } = data;
-
+  async create(data: createOrderDTO, user: { id }): Promise<OrderModel> {
     //TODO: Загрузка Изображений
 
     const order = await this.orderModel.create<OrderModel>({
-      description: orderData.description,
-      userId: user.userId,
-      numberCar: orderData.numberCar,
-      address: orderData.address,
+      description: data.description,
+      userId: user.id,
+      numberCar: data.numberCar,
+      address: data.address,
       statusId: 1,
     });
 
@@ -61,11 +61,26 @@ export class OrdersService {
   }
   //------IMAGE-------//
 
-  async uploadFile(file: Express.Multer.File): Promise<FileModel> {
-    return this.imageModel.create({
+  async uploadFile(data: UploadFileDTO): Promise<FileModel> {
+    const { file, orderId, user } = data;
+
+    //TODO: Можно удалить
+    const order = await this.getOrdersByID(orderId);
+
+    //FIXME Удалить сохранённый файл, в случае ошибки
+
+    //FIXME
+    if (order.userId != user.id) {
+      throw new Error('Access denied');
+    }
+
+    const createdFile = await this.imageModel.create({
       filename: file.originalname,
       path: file.path,
+      orderId: orderId,
     });
+
+    return createdFile;
   }
 
   async getAllFiles(): Promise<FileModel[]> {

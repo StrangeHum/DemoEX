@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Query,
+  Redirect,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { UserModel } from './models/user.entity';
@@ -23,7 +24,7 @@ export class UsersController {
   }
   @Post('create')
   @HttpCode(201)
-  async createUser(@Body() body: CreateUserDto): Promise<any> {
+  async createUser(@Body() body: CreateUserDto): Promise<UserModel> {
     //TODO: проверки на перед созданием
 
     const user = await this.userService.create(body);

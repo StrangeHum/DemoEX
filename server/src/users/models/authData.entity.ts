@@ -7,7 +7,7 @@ import {
   DataType,
 } from 'sequelize-typescript';
 import { UserModel } from './user.entity';
-import { ApiHideProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { UserRole } from 'src/types/types';
 
 @Table({ tableName: 'userAuth' })
@@ -16,10 +16,11 @@ export class UserAuthModel extends Model<UserAuthModel> {
     autoIncrement: true,
     primaryKey: true,
   })
-  @ApiHideProperty()
   id: number;
 
-  @BelongsTo(() => UserModel) user: UserModel;
+  @ApiHideProperty()
+  @BelongsTo(() => UserModel)
+  user: UserModel;
 
   @ForeignKey(() => UserModel)
   @Column

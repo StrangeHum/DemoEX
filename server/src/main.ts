@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 //TODO: SSL Сертификат
 
@@ -16,6 +17,9 @@ async function bootstrap() {
       'http://localhost:3001/',
     ],
   });
+
+  app.useGlobalPipes(new ValidationPipe());
+
   app.useStaticAssets(join(__dirname, '..', 'uploads')); //Можно убрать
 
   const config = new DocumentBuilder()
