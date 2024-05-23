@@ -1,11 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
-import { User, AuthData } from "@src/types";
+import { User, authDataPassword } from "@src/types";
 import { Button, TextField } from "@mui/material";
 import { FieldValidation } from "../components/validation/FieldValidation";
 
 import { ButtonNavigateToLogin } from "@src/components/ButtonNavigateToLogin";
 
-export type LoginFormFields = User & AuthData; //TODO: Создать отдельный тип для полей
+export type LoginFormFields = User & authDataPassword; //TODO: Создать отдельный тип для полей
 
 export const Signin = () => {
   const methods = useForm<LoginFormFields>({ mode: "onBlur" });

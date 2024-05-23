@@ -1,27 +1,28 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { User } from "@src/types";
 
-const initialState = {
+const initialState: User = {
+  id: 0,
   firstName: "",
-  lastname: "",
+  secondName: "",
+  surname: "",
+  email: "",
+  phone: "",
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setFirstName: (state, action: PayloadAction<string>) => {
+    setUser: (state, action: PayloadAction<User>) => {
       console.log("reducer user setFirstName > ", action);
-      state.firstName = action.payload;
-    },
-    setLastName: (state, action: PayloadAction<string>) => {
-      console.log("reducer user setLastName > ", action);
-      state.lastname = action.payload;
+      state = action.payload;
     },
   },
 });
 
 export const actions = userSlice.actions;
 
-export const { setFirstName, setLastName } = actions;
+export const { setUser } = actions;
 
 export default userSlice.reducer;

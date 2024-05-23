@@ -11,6 +11,7 @@ import { FieldValidation } from "../validation/FieldValidation";
 import { useTryAuthMutation } from "@src/redux/api/auth.api";
 
 import { ButtonNavigateToSignup } from "../ButtonNavigateToSignup";
+import { useActions } from "../hooks/useActions";
 
 //TODO Вынести типы в файл
 export interface LoginFormProps {
@@ -27,6 +28,8 @@ export type LoginFormFields = {
 export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
   const [loginUser, { data, isSuccess, isLoading, isError }] =
     useTryAuthMutation();
+
+  const { setUser } = useActions();
 
   const methods = useForm<LoginFormFields>({
     defaultValues: {
@@ -56,6 +59,11 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
     //TODO: Сорханение в local store
     if (isSuccess) {
       console.log(data);
+      if (!data) {
+        console.error("dataAuth");
+      }
+
+      setUser(data.user);
     }
   }, [isSuccess]);
 

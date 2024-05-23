@@ -1,5 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { AuthData } from "@src/types";
+import { User, authDataPassword } from "@src/types";
+
+export type ResponseLoginDataAuth = {
+  token: string;
+  user: User;
+};
 
 export const authApi = createApi({
   reducerPath: "userApi",
@@ -20,10 +25,7 @@ export const authApi = createApi({
   tagTypes: ["user"],
 
   endpoints: (builder) => ({
-    tryAuth: builder.mutation<
-      { login: string; token: string },
-      AuthData
-    >({
+    tryAuth: builder.mutation<ResponseLoginDataAuth, authDataPassword>({
       query: (data) => ({
         url: `/auth/login`,
         method: "post",

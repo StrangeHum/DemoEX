@@ -3,7 +3,7 @@ import { LoginForm } from "@src/components/loginForm";
 import { LoadingButton } from "@mui/lab";
 import { useState } from "react";
 
-import { AuthData } from "@src/types";
+import { authDataPassword } from "@src/types";
 
 export const LoginPage = () => {
   const token = async () => {

@@ -1,14 +1,13 @@
 export type User = {
   id: number;
   firstName: string;
-  lastName: string;
+  secondName: string;
   surname: string;
   email: string;
   phone: string;
 };
 
-export type AuthData = {
-  idUser: number;
+export type authDataPassword = {
   login: string;
   password: string;
 };
