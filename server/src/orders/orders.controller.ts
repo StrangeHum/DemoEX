@@ -69,8 +69,15 @@ export class OrdersController {
 
   @Get('file/:id')
   async getFile(@Param('id') id: string, @Res() res: Response) {
-    const image = await this.orderService.getFileById(+id);
-    res.sendFile(image.path, { root: './' });
+    try {
+      const image = await this.orderService.getFileById(+id);
+      if (!image) {
+        return res.status(404).send('File not found');
+      }
+      res.sendFile(image.path, { root: './' });
+    } catch (error) {
+      return res.status(500).send('Internal Server Error');
+    }
   }
 
   @Get(':id/filesData')

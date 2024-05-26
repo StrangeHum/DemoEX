@@ -1,7 +1,5 @@
 import { UserModel } from 'src/users/models/user.entity';
 
-export default class responseDataAuth {
-  user: UserModel;
+export default class responseRefreshedAccessToken {
   accessToken: string;
-  refreshToken: string;
 }

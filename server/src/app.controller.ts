@@ -7,6 +7,6 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
   @Get()
   async login() {
-    return 'hello world';
+    return { data: 'hello world' };
   }
 }

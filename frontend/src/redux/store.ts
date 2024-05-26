@@ -1,16 +1,16 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userSlice from "./user/userSlice";
-import { authApi } from "./api/auth.api";
+import { api } from "./api/api";
 
 const rootReducer = combineReducers({
-  [authApi.reducerPath]: authApi.reducer,
+  [api.reducerPath]: api.reducer,
   user: userSlice,
 });
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware),
+    getDefaultMiddleware().concat(api.middleware),
 });
 
 export default store;

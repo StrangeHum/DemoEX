@@ -12,6 +12,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { authDataJWT } from 'src/auth/dto/authDataJWT.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { authDataPassword } from 'src/auth/dto/authDataPassword.dto';
+import { RefreshJwtAuthGuard } from './guards/refresh-jwt-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -32,5 +33,13 @@ export class AuthController {
   async authJWT(@Request() req: { token: string; user: any }) {
     const data = req.user;
     return data;
+  }
+
+  @Post('refresh')
+  @UseGuards(RefreshJwtAuthGuard)
+  @ApiBody({ type: authDataJWT })
+  async refreshToken(@Request() req: { token: string; user: any }) {
+    const user = await this.authService.refreshToken(req.user);
+    return user;
   }
 }

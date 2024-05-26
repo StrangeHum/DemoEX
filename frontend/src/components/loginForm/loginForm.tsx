@@ -61,6 +61,7 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
       console.log(data);
       if (!data) {
         console.error("dataAuth");
+        return;
       }
 
       setUser(data.user);
