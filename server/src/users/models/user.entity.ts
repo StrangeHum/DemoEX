@@ -1,7 +1,8 @@
-import { Column, Model, Table, HasOne } from 'sequelize-typescript';
+import { Column, Model, Table, HasOne, DataType } from 'sequelize-typescript';
 import { UserAuthModel } from './authData.entity';
 import { ApiHideProperty } from '@nestjs/swagger';
 import { IsEmail, IsPhoneNumber } from 'class-validator';
+import { UserRole } from 'src/types/types';
 
 @Table({ tableName: 'user' })
 export class UserModel extends Model<UserModel> {
@@ -29,4 +30,11 @@ export class UserModel extends Model<UserModel> {
   @Column
   @IsPhoneNumber()
   phone: string;
+
+  @Column({
+    type: DataType.ENUM,
+    values: Object.keys(UserRole),
+    allowNull: false,
+  })
+  role: UserRole;
 }

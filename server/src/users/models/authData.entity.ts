@@ -31,11 +31,4 @@ export class UserAuthModel extends Model<UserAuthModel> {
 
   @Column
   password: string;
-
-  @Column({
-    type: DataType.ENUM,
-    values: Object.keys(UserRole),
-    allowNull: false,
-  })
-  role: UserRole;
 }

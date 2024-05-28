@@ -5,31 +5,26 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FieldValidation } from "../validation/FieldValidation";
-import { useTryAuthMutation } from "@src/redux/api/auth.api";
-
 import { ButtonNavigateToSignup } from "../ButtonNavigateToSignup";
-import { useActions } from "../hooks/useActions";
 
 //TODO Вынести типы в файл
 export interface LoginFormProps {
-  onSubmit: (data: LoginFormFields) => void;
+  onSubmit: LoginFormOnSubmit;
 }
 
+export type LoginFormOnSubmit = (data: LoginFormFields) => void;
+
 export type LoginFormFields = {
-  //FIXME AuthData & {значения...}
   login: string;
   password: string;
   rememberMe: boolean;
 };
 
 export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
-  const [loginUser, { data, isSuccess, isLoading, isError }] =
-    useTryAuthMutation();
-
-  const { setUser } = useActions();
+  const { onSubmit } = props;
 
   const methods = useForm<LoginFormFields>({
     defaultValues: {
@@ -46,39 +41,15 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
     control,
   } = methods;
 
-  const onSubmit = handleSubmit(async (data, e) => {
+  const onSubmitForm = handleSubmit(async (data, e) => {
     console.log(data);
-    loginUser({
-      login: data.login,
-      password: data.password,
-      // rememberMe: data.rememberMe, //TODO: Remember
-    });
+
+    onSubmit(data);
   });
-
-  useEffect(() => {
-    //TODO: Сорханение в local store
-    if (isSuccess) {
-      console.log(data);
-      if (!data) {
-        console.error("dataAuth");
-        return;
-      }
-
-      setUser(data.user);
-    }
-  }, [isSuccess]);
-
-  if (isError) {
-    return <div>error</div>;
-  }
-
-  if (isLoading) {
-    return <div>Load...</div>;
-  }
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmitForm}>
         {/* TODO: Валидация логина */}
         <Stack>
           <Controller

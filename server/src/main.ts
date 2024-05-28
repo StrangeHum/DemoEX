@@ -9,14 +9,14 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // app.enableCors();
-  app.enableCors({
-    origin: [
-      'http://localhost:3001/*',
-      'http://localhost:3001',
-      'http://localhost:3001/',
-    ],
-  });
+  app.enableCors();
+  // app.enableCors({
+  //   origin: [
+  //     'http://localhost:3001/*',
+  //     'http://localhost:3001',
+  //     'http://localhost:3001/',
+  //   ],
+  // });
 
   app.useGlobalPipes(new ValidationPipe());
 

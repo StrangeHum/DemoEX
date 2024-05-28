@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import responseDataAuth from './dto/responseDataAuth.dto';
 import { UserModel } from 'src/users/models/user.entity';
 import responseRefreshedAccessToken from './dto/responseRefreshedAccessToken.dto';
+import { dataOnToken } from 'src/types/types';
 
 @Injectable()
 export class AuthService {
@@ -28,21 +29,20 @@ export class AuthService {
 
     return {
       user: user,
+      role: user.role,
       accessToken: this.jwtService.sign({ id }),
       refreshToken: this.jwtService.sign({ id }, { expiresIn: '7d' }),
     };
   }
   //TODO: Изменить обновление токена
   async refreshToken(user: UserModel): Promise<responseRefreshedAccessToken> {
-    const { id } = user;
-
-    //TODO: Создать тип Payload - содержащий данные для токена
-    // const payload = {
-    //   username:
-    // }
+    const payload: dataOnToken = {
+      id: user.id,
+      role: user.role,
+    };
 
     return {
-      accessToken: this.jwtService.sign({ id }),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 }

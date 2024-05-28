@@ -22,3 +22,10 @@ export type Status = {
   id: number;
   title: string;
 };
+
+export enum UserRole {
+  User = "User",
+  Police = "Police",
+  Moderator = "Moderator",
+  Admin = "Admin",
+}

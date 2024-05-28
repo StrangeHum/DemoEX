@@ -5,6 +5,7 @@ import {
   Request,
   Post,
   Redirect,
+  Response,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -14,6 +15,8 @@ import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { authDataPassword } from 'src/auth/dto/authDataPassword.dto';
 import { RefreshJwtAuthGuard } from './guards/refresh-jwt-auth.guard';
 
+import { Response as Res } from 'express';
+
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -22,9 +25,9 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   @ApiBody({ type: authDataPassword })
-  async loginFoo(@Request() req) {
+  async loginFoo(@Request() req, @Response() res: Res) {
     const user = await this.authService.login(req.user);
-    return user;
+    res.status(200).send(user);
   }
 
   @Get('jwt')

@@ -56,7 +56,6 @@ export class UsersService {
     const userAuthData = await this.userAuthModel.create<UserAuthModel>({
       login: authData.login,
       password: authData.password,
-      role: UserRole.User,
     });
 
     const user = await this.userModel.create<UserModel>({
@@ -66,6 +65,7 @@ export class UsersService {
       email: userData.email,
       phone: userData.phone,
       userAuthData: userAuthData,
+      role: UserRole.User,
     });
 
     userAuthData.userId = user.id;
