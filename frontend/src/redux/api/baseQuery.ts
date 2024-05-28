@@ -7,7 +7,7 @@ import {
 } from "../auth/authSlice";
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3000",
+  baseUrl: "https://7z9jc9m4-3000.euw.devtunnels.ms/",
   // credentials: "same-origin",
   prepareHeaders: (headers, { getState }) => {
     headers.set("Content-Type", "application/json");
@@ -37,6 +37,7 @@ export const baseQueryRefreshToken: BaseQueryFn = async (
   var result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
+    console.log("Try update Token");
     const store = api.getState() as RootStore;
 
     var refreshToken = selectRefreshToken(store);
@@ -45,8 +46,6 @@ export const baseQueryRefreshToken: BaseQueryFn = async (
     if (!refreshToken) {
       refreshToken = localStorage.getItem("refreshToken");
     }
-
-    console.log(refreshToken);
 
     //Если всёравно нет токена для обновления
     if (!refreshToken) {
@@ -66,9 +65,8 @@ export const baseQueryRefreshToken: BaseQueryFn = async (
 
     var data = refreshResult.data as { accessToken: string };
 
-    console.log(refreshResult);
-
     if (data) {
+      console.log("Успех");
       api.dispatch(updateAccessToken(data.accessToken));
       // retry the original query with new access token
       result = await baseQuery(args, api, extraOptions);

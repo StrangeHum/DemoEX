@@ -15,5 +15,9 @@ export const Profile = () => {
     }
   }, [user, navigate]);
 
-  return <>{user?.firstName}</>;
+  return (
+    <div>
+      {user?.firstName} {user?.email} {user?.phone}
+    </div>
+  );
 };

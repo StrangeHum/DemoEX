@@ -14,6 +14,8 @@ export const LoginPage = () => {
   const [loginUser, { data, isSuccess, isLoading, isError }] =
     useTryAuthMutation();
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     if (isSuccess) {
       if (!data) {
