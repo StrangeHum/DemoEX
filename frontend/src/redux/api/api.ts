@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery, baseQueryRefreshToken } from "./baseQuery";
+import { baseQueryRefreshToken } from "./baseQuery";
 
 export const api = createApi({
   reducerPath: "api",

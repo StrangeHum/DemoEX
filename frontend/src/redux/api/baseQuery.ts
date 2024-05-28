@@ -1,9 +1,8 @@
 import { BaseQueryFn, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import store, { RootStore } from "../store";
+import { RootStore } from "../store";
 import {
-  authState,
   logout,
-  setCredentials,
+  selectRefreshToken,
   updateAccessToken,
 } from "../auth/authSlice";
 
@@ -14,17 +13,16 @@ export const baseQuery = fetchBaseQuery({
     headers.set("Content-Type", "application/json");
 
     var accessToken: string | null = null;
+    const state = getState() as RootStore;
 
-    accessToken = (getState() as RootStore).auth.accessToken;
+    accessToken = state.auth.accessToken;
+
+    if (!accessToken) {
+      accessToken = localStorage.getItem("token");
+    }
 
     if (accessToken) {
       headers.set("authorization", `Bearer ${accessToken}`);
-    } else {
-      accessToken = localStorage.getItem("token");
-
-      if (accessToken) {
-        headers.set("authorization", `Bearer ${accessToken}`);
-      }
     }
 
     return headers;
@@ -38,25 +36,45 @@ export const baseQueryRefreshToken: BaseQueryFn = async (
 ) => {
   var result = await baseQuery(args, api, extraOptions);
 
-  if (result?.error?.status === 403) {
-    console.log("sending refresh token");
-    // send refresh token to get new access token
-    var refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
+  if (result?.error?.status === 401) {
+    const store = api.getState() as RootStore;
+
+    var refreshToken = selectRefreshToken(store);
+
+    //Если токена нет в сторе
+    if (!refreshToken) {
+      refreshToken = localStorage.getItem("refreshToken");
+    }
+
+    console.log(refreshToken);
+
+    //Если всёравно нет токена для обновления
+    if (!refreshToken) {
+      api.dispatch(logout());
+      return result;
+    }
+
+    var refreshResult = await baseQuery(
+      {
+        url: "/auth/refresh",
+        method: "POST",
+        body: { refresh: refreshToken },
+      },
+      api,
+      extraOptions
+    );
 
     var data = refreshResult.data as { accessToken: string };
 
     console.log(refreshResult);
+
     if (data) {
-      // var state = api.getState() as RootStore;
-
-      // var user = state.auth.user;
-
-      // store the new token
       api.dispatch(updateAccessToken(data.accessToken));
       // retry the original query with new access token
       result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch(logout());
+      window.location.href = "/login";
     }
   }
 

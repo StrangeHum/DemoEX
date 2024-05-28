@@ -3,17 +3,18 @@ import { LoginFormOnSubmit } from "@src/components/loginForm/loginForm";
 import { useTryAuthMutation } from "@src/redux/api/auth.api";
 import { setCredentials } from "@src/redux/auth/authSlice";
 import store from "@src/redux/store";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 export const LoginPage = () => {
-  var remember: boolean = false;
+  const navigate = useNavigate();
+
+  const [remember, setRemember] = useState(false);
 
   const [loginUser, { data, isSuccess, isLoading, isError }] =
     useTryAuthMutation();
 
   useEffect(() => {
-    //TODO: Сорханение в local store
-    console.log("не отработало)", isSuccess);
     if (isSuccess) {
       if (!data) {
         console.error("dataAuth");
@@ -23,10 +24,12 @@ export const LoginPage = () => {
       console.log(data);
 
       if (remember && data.refreshToken) {
+        console.log("refreshTokenSave");
         localStorage.setItem("refreshToken", data.refreshToken);
       }
 
       store.dispatch(setCredentials(data));
+      navigate("/profile");
     }
   }, [isSuccess]);
 
@@ -36,7 +39,7 @@ export const LoginPage = () => {
         login: data.login,
         password: data.password,
       });
-      remember = data.rememberMe;
+      setRemember(data.rememberMe);
     },
     [loginUser]
   );

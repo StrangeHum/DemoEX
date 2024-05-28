@@ -21,19 +21,23 @@ import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { authDataJWT } from 'src/auth/dto/authDataJWT.dto';
 import { UploadFileDTO } from './dto/uploadFile.dto';
-import { userDataFromToken, dataOnToken } from 'src/types/types';
+import { userDataFromToken } from 'src/types/types';
+import { OrderModel } from './models/order.entity';
 
-@Controller('order')
-@ApiTags('order')
+@Controller('orders')
+@ApiTags('orders')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
   constructor(private orderService: OrdersService) {}
 
   @Get()
   @ApiBody({ type: authDataJWT })
-  async getAllOrdersByUserId(@Request() req: userDataFromToken) {
+  async getAllOrdersByUserId(
+    @Request() req: userDataFromToken,
+  ): Promise<{ orders: OrderModel[] }> {
     const { user } = req;
-    return this.orderService.findAllOrdersByUserId(user.id);
+    const orders = await this.orderService.findAllOrdersByUserId(user.id);
+    return { orders: orders };
   }
 
   @Post('create')
