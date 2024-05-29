@@ -8,8 +8,8 @@ import { setupListeners } from "@reduxjs/toolkit/query/react";
 import { authApi } from "./api/auth.api";
 
 const rootReducer = combineReducers({
-  [api.reducerPath]: api.reducer,
   [authApi.reducerPath]: authApi.reducer,
+  [api.reducerPath]: api.reducer,
   [apiOrders.reducerPath]: apiOrders.reducer,
   auth: authSlice,
 });
@@ -23,7 +23,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: ["persist/PERSIST"],
       },
-    }).concat(api.middleware, apiOrders.middleware, authApi.middleware),
+    }).concat(authApi.middleware, api.middleware, apiOrders.middleware),
 });
 
 export const persistor = persistStore(store);
