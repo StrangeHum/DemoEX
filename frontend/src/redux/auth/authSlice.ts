@@ -7,23 +7,13 @@ import storage from "redux-persist/lib/storage";
 export type authState = {
   accessToken: string | null;
   refreshToken: string | null;
-  role: UserRole | null;
   user: User | null;
 };
 
 const initialState: authState = {
   accessToken: "",
   refreshToken: "",
-  //TODO: Роли пользователя
-  role: UserRole.User,
-  user: {
-    id: 0,
-    firstName: "",
-    secondName: "",
-    surname: "",
-    email: "",
-    phone: "",
-  },
+  user: null,
 };
 
 // const authPersistConfig = {

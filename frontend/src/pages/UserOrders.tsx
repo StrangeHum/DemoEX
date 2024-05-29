@@ -1,8 +1,9 @@
 import { useUserOrdersQuery } from "@src/redux/api/userOrders.api";
 import { selectCurrentUser } from "@src/redux/auth/authSlice";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, Outlet } from "react-router";
 import { useSelector } from "react-redux";
+import { FileUploadComponent } from "@src/components/FileUploadComponent";
 
 export const UserOrders = () => {
   //TODO: Создать нормальную защиту роутинга
@@ -31,15 +32,28 @@ export const UserOrders = () => {
     return <div>Load...</div>;
   }
 
-  const Foo = () => {
+  const OrdersComponent = () => {
     if (!data) {
       return <div>Нет заявлений...</div>;
     }
 
     return data.orders.map((order, id) => (
-      <div key={id}>{order.description}</div>
+      <button
+        onClick={(e) => {
+          navigate(`/orders/${order.id}`);
+        }}
+        key={order.id}
+      >
+        {order.description} - {order.status?.title}
+      </button>
     ));
   };
 
-  return <>{Foo()}</>;
+  return (
+    <>
+      {OrdersComponent()}
+      <Outlet />
+      {/* <FileUploadComponent /> */}
+    </>
+  );
 };

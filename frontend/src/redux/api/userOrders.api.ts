@@ -1,25 +1,31 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQueryRefreshToken } from "./baseQuery";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseQuery, baseQueryRefreshToken } from "./baseQuery";
+import { RootStore } from "../store";
+
+export type DataFileOrder = {
+  filename: string;
+  path: string;
+  orderId: number;
+  order: string;
+};
 
 export type OrderType = {
-  id: 0;
-  userId: 0;
-  statusId: 0;
+  id: number;
+  userId: number;
+  statusId: number;
   status: {
-    id: 0;
-    title: "string";
+    id: number;
+    title: string;
   };
-  description: "string";
-  numberCar: "string";
-  address: "string";
-  files: [
-    {
-      filename: "string";
-      path: "string";
-      orderId: 0;
-      order: "string";
-    }
-  ];
+  description: string;
+  numberCar: string;
+  address: string;
+  files: DataFileOrder[];
+};
+
+export type UploadFileDTO = {
+  orderId: number;
+  file: File;
 };
 
 export type ResponseOrderData = {
@@ -38,7 +44,36 @@ export const apiOrders = createApi({
       }),
       providesTags: ["Orders"],
     }),
+    orderData: builder.query<ResponseOrderData, number>({
+      query: (data) => ({
+        url: `/orders`,
+        method: "get",
+      }),
+      providesTags: ["Orders"],
+    }),
+    //TODO: Загрузить
+    getFile: builder.query<Blob, number>({
+      query: (id) => ({
+        url: `/file/${id}`,
+        method: "get",
+        responseHandler: (response) => response.blob(), // Указываем обработчик ответа для получения Blob
+      }),
+    }),
+    uploadFile: builder.mutation<any, FormData>({
+      query: (formData) => {
+        return {
+          url: `/orders/uploadfile`,
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data;",
+          },
+          body: formData,
+          formData: true,
+        };
+      },
+    }),
   }),
 });
 
-export const { useUserOrdersQuery } = apiOrders;
+export const { useUserOrdersQuery, useUploadFileMutation, useGetFileQuery } =
+  apiOrders;

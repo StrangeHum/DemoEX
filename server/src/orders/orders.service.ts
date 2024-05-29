@@ -36,6 +36,7 @@ export class OrdersService {
   async findAllOrdersByUserId(userId: number): Promise<OrderModel[]> {
     //{ data: any, userId: number }: any
     const order = await this.orderModel.findAll<OrderModel>({
+      include: [StatusOrderModel],
       where: [
         {
           userId: userId,
