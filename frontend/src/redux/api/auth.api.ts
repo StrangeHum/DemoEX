@@ -1,6 +1,8 @@
 import { User, authDataPassword } from "@src/types";
 import { api } from "./api";
 import { authState } from "../auth/authSlice";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "./baseQuery";
 
 export type ResponseLoginDataAuth = {
   refreshToken: string;
@@ -8,7 +10,9 @@ export type ResponseLoginDataAuth = {
   user: User;
 };
 
-export const authApi = api.injectEndpoints({
+export const authApi = createApi({
+  reducerPath: "authApi",
+  baseQuery: baseQuery,
   endpoints: (builder) => ({
     tryAuth: builder.mutation<authState, authDataPassword>({
       query: (data) => ({

@@ -4,10 +4,49 @@ import { Button, TextField } from "@mui/material";
 import { FieldValidation } from "../components/validation/FieldValidation";
 
 import { ButtonNavigateToLogin } from "@src/components/ButtonNavigateToLogin";
+import { useSigninMutation } from "@src/redux/api/user.api";
+import { useCallback, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export type LoginFormFields = User & authDataPassword; //TODO: Создать отдельный тип для полей
 
-export const Signin = () => {
+export const SigninPage = () => {
+  const navigate = useNavigate();
+  const [signin, { data, isSuccess, isLoading, isError }] = useSigninMutation();
+
+  const onSubmit = useCallback(
+    (fields: LoginFormFields) => {
+      const { login, password, ...user } = fields;
+
+      signin({ authData: { login, password }, user });
+    },
+    [signin]
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/login");
+      if (!data) {
+        return;
+      }
+      console.log(data);
+    }
+  }, [isSuccess]);
+
+  if (isError) {
+    return <div>error</div>;
+  }
+
+  if (isLoading) {
+    return <div>Load...</div>;
+  }
+
+  return <SigninForm onSubmit={onSubmit} />;
+};
+
+export const SigninForm = (props: {
+  onSubmit: (fields: LoginFormFields) => void;
+}) => {
   const methods = useForm<LoginFormFields>({ mode: "onBlur" });
 
   const {
@@ -19,6 +58,7 @@ export const Signin = () => {
   const onSubmit = handleSubmit(async (data, e) => {
     e?.preventDefault();
     console.log(data);
+    onSubmit(data);
   });
 
   //TODO: отображение необходимости заполнить поля
@@ -56,6 +96,7 @@ export const Signin = () => {
             />
           )}
         />
+
         <Controller
           rules={FieldValidation}
           name="email"

@@ -1,18 +1,33 @@
 import cn from "classnames";
 import styles from "./Header.module.scss";
-import { NavLink } from "react-router-dom";
-import ReactIcon from "@src/assets/react.svg";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { logout, selectCurrentUser } from "@src/redux/auth/authSlice";
+import store from "@src/redux/store";
 
 export const Header = () => {
-  const isAuth = false;
+  const user = useSelector(selectCurrentUser);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    store.dispatch(logout());
+    navigate("/login");
+  };
 
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
         <NavLinkItem to="/">Home</NavLinkItem>
-        {!isAuth && (
-          <NavLink to="/login">
-            <img src={ReactIcon} alt="foo" />
+        {user?.firstName && <NavLinkItem to="/profile">Профиль</NavLinkItem>}
+        {user?.firstName && <NavLinkItem to="/orders">Заявления</NavLinkItem>}
+        {user ? (
+          <button onClick={handleLogout} className={styles.navButton}>
+            Выйти
+          </button>
+        ) : (
+          <NavLink to="/login" className={styles.navLink}>
+            <img src="path/to/icon.png" alt="Login" />{" "}
+            {/* Убедитесь, что путь к иконке корректный */}
           </NavLink>
         )}
       </nav>

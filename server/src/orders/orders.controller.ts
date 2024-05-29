@@ -63,12 +63,27 @@ export class OrdersController {
           cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
+      limits: { fileSize: 50 * 1024 * 1024 }, //лимит размера файла до 50MB
     }),
   )
   @ApiBody({ type: UploadFileDTO })
-  async uploadFile(@UploadedFile() file, @Request() req: UploadFileDTO) {
-    const image = await this.orderService.uploadFile(req);
-    return image;
+  async uploadFile(
+    @Body() body,
+    @UploadedFile() file,
+    @Request() req: UploadFileDTO,
+  ) {
+    console.log(file);
+    // const data: UploadFileDTO = {
+    //   file: file,
+    //   orderId: 7,
+    //   user: req.user,
+    // };
+    // console.log(data);
+
+    // const image = await this.orderService.uploadFile(data);
+    // console.log(image);
+
+    return 'image';
   }
 
   @Get('file/:id')

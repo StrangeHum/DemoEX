@@ -7,19 +7,15 @@ import {
 } from "../auth/authSlice";
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "https://7z9jc9m4-3000.euw.devtunnels.ms/",
+  baseUrl: "http://localhost:3000",
   // credentials: "same-origin",
   prepareHeaders: (headers, { getState }) => {
-    headers.set("Content-Type", "application/json");
+    // headers.set("Content-Type", "application/json");
 
     var accessToken: string | null = null;
     const state = getState() as RootStore;
 
     accessToken = state.auth.accessToken;
-
-    if (!accessToken) {
-      accessToken = localStorage.getItem("token");
-    }
 
     if (accessToken) {
       headers.set("authorization", `Bearer ${accessToken}`);
@@ -42,12 +38,6 @@ export const baseQueryRefreshToken: BaseQueryFn = async (
 
     var refreshToken = selectRefreshToken(store);
 
-    //Если токена нет в сторе
-    if (!refreshToken) {
-      refreshToken = localStorage.getItem("refreshToken");
-    }
-
-    //Если всёравно нет токена для обновления
     if (!refreshToken) {
       api.dispatch(logout());
       return result;
@@ -68,7 +58,7 @@ export const baseQueryRefreshToken: BaseQueryFn = async (
     if (data) {
       console.log("Успех");
       api.dispatch(updateAccessToken(data.accessToken));
-      // retry the original query with new access token
+
       result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch(logout());

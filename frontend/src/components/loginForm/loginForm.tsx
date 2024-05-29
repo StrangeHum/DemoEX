@@ -77,7 +77,7 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
               <TextField
                 {...field}
                 label="пароль"
-                type="text"
+                type="password"
                 // onBlur={onBlur}
                 // onChange={onChange}
                 error={!!errors.password?.message}

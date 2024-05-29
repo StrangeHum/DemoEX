@@ -1,5 +1,5 @@
+import { Button } from "@mui/material";
 import { selectCurrentUser } from "@src/redux/auth/authSlice";
-import store from "@src/redux/store";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -17,6 +17,13 @@ export const Profile = () => {
 
   return (
     <div>
+      <Button
+        onClick={() => {
+          navigate("/orders");
+        }}
+      >
+        Заявления
+      </Button>
       {user?.firstName} {user?.email} {user?.phone}
     </div>
   );
