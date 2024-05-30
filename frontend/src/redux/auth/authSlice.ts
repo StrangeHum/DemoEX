@@ -1,8 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { User, UserRole } from "@src/types";
 import { RootStore } from "../store";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 
 export type authState = {
   accessToken: string | null;
@@ -15,12 +13,6 @@ const initialState: authState = {
   refreshToken: "",
   user: null,
 };
-
-// const authPersistConfig = {
-//   key: "auth",
-//   storage: storage,
-//   whitelist: ["accessToken", "refreshToken", "user"],
-// };
 
 export const authSlice = createSlice({
   name: "auth",
@@ -53,8 +45,3 @@ export default authSlice.reducer;
 export const selectCurrentUser = (state: RootStore) => state.auth.user;
 export const selectAccessToken = (state: RootStore) => state.auth.accessToken;
 export const selectRefreshToken = (state: RootStore) => state.auth.refreshToken;
-
-// export const persistedAuthReducer = persistReducer(
-//   authPersistConfig,
-//   authSlice.reducer
-// );

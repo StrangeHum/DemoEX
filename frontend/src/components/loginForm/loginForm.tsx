@@ -1,9 +1,11 @@
 import {
+  Box,
   Button,
   Checkbox,
   FormControlLabel,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { FC } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -20,7 +22,6 @@ export type LoginFormOnSubmit = (data: LoginFormFields) => void;
 export type LoginFormFields = {
   login: string;
   password: string;
-  rememberMe: boolean;
 };
 
 export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
@@ -30,7 +31,6 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
     defaultValues: {
       login: "",
       password: "",
-      rememberMe: false,
     },
     mode: "onBlur",
   });
@@ -48,69 +48,68 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
   });
 
   return (
-    <div>
-      <form onSubmit={onSubmitForm}>
-        {/* TODO: Валидация логина */}
-        <Stack>
-          <Controller
-            rules={FieldValidation}
-            control={control}
-            name="login"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="логин"
-                type="text"
-                // onBlur={onBlur}
-                // onChange={onChange}
-                error={!!errors.login?.message}
-                helperText={errors.login?.message}
-              />
-            )}
-          />
+    <Box
+      component="form"
+      onSubmit={onSubmitForm}
+      sx={{
+        maxWidth: 400,
+        mx: "auto",
+        mt: 4,
+        p: 3,
+        boxShadow: 3,
+        borderRadius: 2,
+      }}
+    >
+      <Typography variant="h5" component="h1" gutterBottom>
+        Вход
+      </Typography>
+      <Stack spacing={2}>
+        <Controller
+          rules={FieldValidation}
+          control={control}
+          name="login"
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="логин"
+              type="text"
+              // onBlur={onBlur}
+              // onChange={onChange}
+              error={!!errors.login?.message}
+              helperText={errors.login?.message}
+            />
+          )}
+        />
 
-          <Controller
-            rules={FieldValidation}
-            control={control}
-            name="password"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label="пароль"
-                type="password"
-                // onBlur={onBlur}
-                // onChange={onChange}
-                error={!!errors.password?.message}
-                helperText={errors.password?.message}
-              />
-            )}
-          />
-          <FormControlLabel
-            label="Запомнить меня"
-            control={
-              <Controller
-                control={control}
-                name="rememberMe"
-                render={({ field: { value, onBlur, onChange } }) => (
-                  <Checkbox checked={value} onChange={onChange} />
-                )}
-              />
-            }
-          ></FormControlLabel>
+        <Controller
+          rules={FieldValidation}
+          control={control}
+          name="password"
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="пароль"
+              type="password"
+              // onBlur={onBlur}
+              // onChange={onChange}
+              error={!!errors.password?.message}
+              helperText={errors.password?.message}
+            />
+          )}
+        />
 
-          <Button
-            type="submit"
-            disabled={!isValid}
-            fullWidth={true}
-            variant="contained"
-          >
-            Войти
-          </Button>
+        <Button
+          type="submit"
+          disabled={!isValid}
+          fullWidth={true}
+          variant="contained"
+        >
+          Войти
+        </Button>
 
-          <ButtonNavigateToSignup />
-        </Stack>
-      </form>
-    </div>
+        <ButtonNavigateToSignup />
+      </Stack>
+    </Box>
   );
 };
 
