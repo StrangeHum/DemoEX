@@ -3,7 +3,6 @@ import { selectCurrentUser } from "@src/redux/auth/authSlice";
 import { useEffect } from "react";
 import { useNavigate, Outlet } from "react-router";
 import { useSelector } from "react-redux";
-import { FileUploadComponent } from "@src/components/FileUploadComponent";
 
 export const UserOrders = () => {
   //TODO: Создать нормальную защиту роутинга

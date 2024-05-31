@@ -7,7 +7,7 @@ import {
 } from "../auth/authSlice";
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3000",
+  baseUrl: "https://7z9jc9m4-3000.euw.devtunnels.ms/",
   // credentials: "same-origin",
   prepareHeaders: (headers, { getState }) => {
     // headers.set("Content-Type", "application/json");
