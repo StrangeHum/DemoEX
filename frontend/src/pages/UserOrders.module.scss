@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  padding: 20px;
+  background-color: var(--mui-background);
+}
+
+.ordersContainer {
+  flex: 1;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.ordersList {
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.outletContainer {
+  margin-top: 20px;
+  flex: 2;
+  padding-left: 20px;
+}
+
+button {
+  margin: 5px 0;
+}
+
+input {
+  margin: 10px 0;
+}

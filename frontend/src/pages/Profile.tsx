@@ -26,7 +26,6 @@ export const Profile: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        backgroundColor: "#f5f5f5",
       }}
     >
       <Card sx={{ maxWidth: 500, padding: 2 }}>

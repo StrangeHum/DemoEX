@@ -1,9 +1,15 @@
 import cn from "classnames";
 import styles from "./Header.module.scss";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { logout, selectCurrentUser } from "@src/redux/auth/authSlice";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  logout,
+  logoutUser,
+  selectCurrentUser,
+} from "@src/redux/auth/authSlice";
 import store from "@src/redux/store";
+import { Typography } from "@mui/material";
+import { apiOrders } from "@src/redux/api/userOrders.api";
 
 export const Header = () => {
   const user = useSelector(selectCurrentUser);
@@ -11,15 +17,25 @@ export const Header = () => {
 
   const handleLogout = () => {
     store.dispatch(logout());
+    store.dispatch(apiOrders.util.invalidateTags(["Orders"]));
     navigate("/login");
   };
 
   return (
     <header className={styles.header}>
+      <Typography
+        variant="h6"
+        component={Link}
+        to="/"
+        sx={{ textDecoration: "none", color: "inherit" }}
+      >
+        Нарушениям.Нет
+      </Typography>
       <nav className={styles.nav}>
-        <NavLinkItem to="/">Home</NavLinkItem>
+        {/* <NavLinkItem to="/">Home</NavLinkItem> */}
         {user?.firstName && <NavLinkItem to="/profile">Профиль</NavLinkItem>}
         {user?.firstName && <NavLinkItem to="/orders">Заявления</NavLinkItem>}
+
         {user ? (
           <button onClick={handleLogout} className={styles.navButton}>
             Выйти
@@ -42,7 +58,7 @@ const navClassName = ({ isActive }: { isActive: boolean }) => {
 const NavLinkItem = (props) => {
   const { to, children } = props;
   return (
-    <NavLink to={to} className={navClassName}>
+    <NavLink to={to} className={navClassName} {...props}>
       {children}
     </NavLink>
   );

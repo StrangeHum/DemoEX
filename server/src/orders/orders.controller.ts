@@ -106,7 +106,7 @@ export class OrdersController {
 
   @Get(':id')
   async getOrderByID(@Param('id') id: number): Promise<any> {
-    return this.orderService.getOrdersByID(id);
+    return this.orderService.getOrderByID(id);
   }
 
   // @Get(':id/files')

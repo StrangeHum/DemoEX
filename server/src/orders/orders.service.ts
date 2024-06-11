@@ -50,9 +50,11 @@ export class OrdersService {
 
     return order;
   }
-  async getOrdersByID(id: number): Promise<OrderModel> {
+  async getOrderByID(id: number): Promise<OrderModel> {
     //{ data: any, userId: number }: any
-    const order = await this.orderModel.findByPk<OrderModel>(id);
+    const order = await this.orderModel.findByPk<OrderModel>(id, {
+      include: [StatusOrderModel, FileModel],
+    });
 
     if (!order) {
       throw new Error('Order not found');
@@ -66,7 +68,7 @@ export class OrdersService {
     const { file, orderId, user } = data;
 
     //TODO: Можно удалить
-    const order = await this.getOrdersByID(orderId);
+    const order = await this.getOrderByID(orderId);
 
     //FIXME Удалить сохранённый файл, в случае ошибки
 

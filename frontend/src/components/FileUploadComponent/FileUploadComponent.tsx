@@ -2,27 +2,23 @@ import { useUploadFileMutation } from "@src/redux/api/userOrders.api";
 import styles from "./FileUploadComponent.module.scss";
 import React, { useState } from "react";
 
-export type FileUploadComponentProps = {};
+export type FileUploadComponentProps = { orderId: number };
 
-export const FileUploadComponent = ({}: FileUploadComponentProps) => {
-  const [file, setFile] = useState(null);
-  const [orderId, setOrderId] = useState("");
-  const [uploadFile, { isLoading, error }] = useUploadFileMutation();
+export const FileUploadComponent = ({ orderId }: FileUploadComponentProps) => {
+  const [files, setFiles] = useState([]);
+  const [uploadFile, { isLoading }] = useUploadFileMutation();
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleFileChange = (event) => {
+    setFiles(event.target.files);
   };
 
   const handleUpload = async () => {
-    if (file && orderId) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("orderId", orderId);
-
-      console.log(formData);
-
-      uploadFile(formData);
+    const formData = new FormData();
+    formData.append("orderId", orderId);
+    for (let file of files) {
+      formData.append("files", file);
     }
+    await uploadFile(formData);
   };
 
   return (
@@ -35,7 +31,7 @@ export const FileUploadComponent = ({}: FileUploadComponentProps) => {
       />
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleUpload} disabled={isLoading}>
-        {isLoading ? "Uploading..." : "Upload File"}
+        {isLoading ? <CircularProgress size={24} /> : "Upload Files"}
       </button>
       {error && <div>Error uploading file</div>}
     </div>

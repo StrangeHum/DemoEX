@@ -3,6 +3,7 @@ import { baseQuery, baseQueryRefreshToken } from "./baseQuery";
 import { RootStore } from "../store";
 
 export type DataFileOrder = {
+  id: number;
   filename: string;
   path: string;
   orderId: number;
@@ -44,21 +45,21 @@ export const apiOrders = createApi({
       }),
       providesTags: ["Orders"],
     }),
-    orderData: builder.query<ResponseOrderData, number>({
+    orderData: builder.query<OrderType, number>({
       query: (data) => ({
         url: `/orders`,
         method: "get",
       }),
       providesTags: ["Orders"],
     }),
-    //TODO: Загрузить
-    getFile: builder.query<Blob, number>({
-      query: (id) => ({
-        url: `/file/${id}`,
+    getFile: builder.query<Blob, { idOrder: number; idFile: number }>({
+      query: (payload) => ({
+        url: `/${payload.idOrder}/file/${payload.idFile}`,
         method: "get",
-        responseHandler: (response) => response.blob(), // Указываем обработчик ответа для получения Blob
+        responseHandler: (response) => response.blob(),
       }),
     }),
+
     uploadFile: builder.mutation<any, FormData>({
       query: (formData) => {
         return {
@@ -71,9 +72,14 @@ export const apiOrders = createApi({
           formData: true,
         };
       },
+      invalidatesTags: ["Orders"],
     }),
   }),
 });
 
-export const { useUserOrdersQuery, useUploadFileMutation, useGetFileQuery } =
-  apiOrders;
+export const {
+  useUserOrdersQuery,
+  useOrderDataQuery,
+  useUploadFileMutation,
+  useGetFileQuery,
+} = apiOrders;

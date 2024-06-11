@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { User, UserRole } from "@src/types";
-import { RootStore } from "../store";
+import { AppDispatch, RootStore } from "../store";
+import { apiOrders } from "../api/userOrders.api";
 
 export type authState = {
   accessToken: string | null;
