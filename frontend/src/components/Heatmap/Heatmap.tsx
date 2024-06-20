@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./Heatmap.module.scss";
 import { OrderType } from "@src/redux/api/userOrders.api";
 
+const moscovCoords = [55.751244, 37.618423];
+
 export type HeatmapProps = {};
 
 const api = "9e3e1c2e-31ad-4b90-acac-d4717c6626dc";
-
+//TODO: Тепловая карта https://www.youtube.com/watch?v=Y7tpjR2dLOQ
 const testOrders: OrderType[] = [
   {
     id: 1,
@@ -57,11 +59,10 @@ const geocodeAddress = async (address: string): Promise<[number, number]> => {
 };
 
 export const Heatmap = ({}: HeatmapProps) => {
+  const [userPos, setUserPos] = useState();
   const [coordinates, setCoordinates] =
     useState<[number, number][]>(testCoordinates);
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(
-    null
-  );
+  const [userLocation, setUserLocation] = useState(moscovCoords);
 
   // useEffect(() => {
   //   const fetchCoordinates = async () => {
@@ -84,7 +85,7 @@ export const Heatmap = ({}: HeatmapProps) => {
   return (
     <YMaps>
       <Map
-        defaultState={{ center: [55.751244, 37.618423], zoom: 10 }}
+        defaultState={{ center: userLocation, zoom: 10 }}
         width="100%"
         height="400px"
       >

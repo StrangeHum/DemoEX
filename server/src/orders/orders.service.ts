@@ -18,8 +18,6 @@ export class OrdersService {
     private readonly imageModel: typeof FileModel,
   ) {}
   async create(data: createOrderDTO, user: { id }): Promise<OrderModel> {
-    //TODO: Загрузка Изображений
-
     const order = await this.orderModel.create<OrderModel>({
       description: data.description,
       userId: user.id,
@@ -67,12 +65,9 @@ export class OrdersService {
   async uploadFile(data: UploadFileDTO): Promise<FileModel> {
     const { file, orderId, user } = data;
 
-    //TODO: Можно удалить
     const order = await this.getOrderByID(orderId);
 
     //FIXME Удалить сохранённый файл, в случае ошибки
-
-    //FIXME
     if (order.userId != user.id) {
       throw new Error('Access denied');
     }

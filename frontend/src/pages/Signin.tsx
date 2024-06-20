@@ -8,7 +8,7 @@ import { useSigninMutation } from "@src/redux/api/user.api";
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router";
 
-export type LoginFormFields = User & authDataPassword; //TODO: Создать отдельный тип для полей
+export type LoginFormFields = User & authDataPassword;
 
 export const SigninPage = () => {
   const navigate = useNavigate();
@@ -61,7 +61,6 @@ export const SigninForm = (props: {
     onSubmit(data);
   });
 
-  //TODO: отображение необходимости заполнить поля
   return (
     <div>
       <form onSubmit={onSubmit}>

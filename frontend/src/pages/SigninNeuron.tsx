@@ -1,44 +1,94 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { TextField, Button } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Stack,
+  Box,
+  InputAdornment,
+  IconButton,
+  Divider,
+} from "@mui/material";
 import { User, authDataPassword } from "@src/types";
 import { useSigninMutation } from "@src/redux/api/user.api"; // Путь к вашему хуку
+import { LoadingButton } from "@mui/lab";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+
+import { Notification } from "@components/Notification";
+import {
+  BaseFieldValidation,
+  EmailValidation,
+  PhoneValidation,
+  ConfirmPasswordValidation,
+} from "@components/validation/FieldValidation";
 
 const RegisterComponent: React.FC = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "error" | "success";
+    open: boolean;
+  }>({ message: "", type: "error", open: false });
+
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors, isValid },
   } = useForm({
-    mode: "onChange",
+    mode: "onBlur",
+    defaultValues: {
+      user: {
+        firstName: "",
+        secondName: "",
+        surname: "",
+        email: "",
+        phone: "",
+      },
+      authData: { login: "", password: "", confirmPassword: "" },
+    },
   });
-  const [register, { isLoading, isError, isSuccess, data }] =
-    useSigninMutation();
+  const [register, { isLoading }] = useSigninMutation();
+
+  const password = watch("authData.password");
 
   const onSubmit = async (data: { user: User; authData: authDataPassword }) => {
     const { user, authData } = data;
     try {
-      await register(user, authData);
-      // Handle success
+      await register({ user, authData });
+      setNotification({
+        message: "Успешная регистрация",
+        type: "success",
+        open: true,
+      });
     } catch (error) {
-      // Handle error
+      setNotification({ message: error.message, type: "error", open: true });
     }
   };
 
-  const FieldValidation = {
-    required: "Поле обязательно для заполнения",
-    minLength: { value: 2, message: "Минимум 2 символа" },
-    maxLength: { value: 30, message: "Максимум 30 символов" },
-  };
-
   return (
-    <div>
-      <form>
-        {/*onSubmit={handleSubmit(onSubmit)*/}
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      sx={{
+        maxWidth: 500,
+        mx: "auto",
+        mt: 4,
+        p: 3,
+        boxShadow: 3,
+        borderRadius: 2,
+      }}
+    >
+      <Typography variant="h5" component="h1" gutterBottom>
+        Регистрация
+      </Typography>
+      <Stack spacing={2}>
         <Controller
           name="user.firstName"
           control={control}
-          rules={FieldValidation}
+          rules={BaseFieldValidation}
           render={({ field }) => (
             <TextField
               {...field}
@@ -49,11 +99,10 @@ const RegisterComponent: React.FC = () => {
             />
           )}
         />
-
         <Controller
           name="user.secondName"
           control={control}
-          rules={FieldValidation}
+          rules={BaseFieldValidation}
           render={({ field }) => (
             <TextField
               {...field}
@@ -64,11 +113,10 @@ const RegisterComponent: React.FC = () => {
             />
           )}
         />
-
         <Controller
           name="user.surname"
           control={control}
-          rules={FieldValidation}
+          rules={BaseFieldValidation}
           render={({ field }) => (
             <TextField
               {...field}
@@ -79,14 +127,10 @@ const RegisterComponent: React.FC = () => {
             />
           )}
         />
-
         <Controller
           name="user.email"
           control={control}
-          rules={{
-            ...FieldValidation,
-            pattern: { value: /^\S+@\S+$/i, message: "Неверный формат email" },
-          }}
+          rules={EmailValidation}
           render={({ field }) => (
             <TextField
               {...field}
@@ -97,17 +141,10 @@ const RegisterComponent: React.FC = () => {
             />
           )}
         />
-
         <Controller
           name="user.phone"
           control={control}
-          rules={{
-            ...FieldValidation,
-            pattern: {
-              value: /^\+?[1-9]\d{1,14}$/,
-              message: "Неверный формат телефона",
-            },
-          }}
+          rules={PhoneValidation}
           render={({ field }) => (
             <TextField
               {...field}
@@ -118,11 +155,12 @@ const RegisterComponent: React.FC = () => {
             />
           )}
         />
+        <Divider sx={{ my: 2 }} />
 
         <Controller
           name="authData.login"
           control={control}
-          rules={FieldValidation}
+          rules={BaseFieldValidation}
           render={({ field }) => (
             <TextField
               {...field}
@@ -133,30 +171,76 @@ const RegisterComponent: React.FC = () => {
             />
           )}
         />
-
         <Controller
           name="authData.password"
           control={control}
-          rules={FieldValidation}
+          rules={BaseFieldValidation}
           render={({ field }) => (
             <TextField
               {...field}
               label="Пароль"
-              type="password"
+              type={showPassword ? "text" : "password"}
               error={!!errors.authData?.password}
               helperText={errors.authData?.password?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           )}
         />
-
-        <Button disabled={!isValid} type="submit" fullWidth variant="contained">
+        <Controller
+          name="authData.confirmPassword"
+          control={control}
+          rules={ConfirmPasswordValidation(password)}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Подтвердите пароль"
+              type={showConfirmPassword ? "text" : "password"}
+              error={!!errors.authData?.confirmPassword}
+              helperText={errors.authData?.confirmPassword?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          )}
+        />
+        <LoadingButton
+          disabled={!isValid}
+          loading={isLoading}
+          type="submit"
+          fullWidth
+          variant="contained"
+        >
           Зарегистрироваться
-        </Button>
-
-        {/* Компонент для навигации к странице логина */}
-        {/* <ButtonNavigateToLogin /> */}
-      </form>
-    </div>
+        </LoadingButton>
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          open={notification.open}
+        />
+      </Stack>
+    </Box>
   );
 };
 

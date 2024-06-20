@@ -63,7 +63,7 @@ export const apiOrders = createApi({
     uploadFile: builder.mutation<any, FormData>({
       query: (formData) => {
         return {
-          url: `/orders/uploadfile`,
+          url: `/orders/uploadFile`,
           method: "post",
           headers: {
             "Content-Type": "multipart/form-data;",

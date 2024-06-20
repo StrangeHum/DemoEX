@@ -12,7 +12,6 @@ import { Controller, useForm } from "react-hook-form";
 import { FieldValidation } from "../validation/FieldValidation";
 import { ButtonNavigateToSignup } from "../ButtonNavigateToSignup";
 
-//TODO Вынести типы в файл
 export interface LoginFormProps {
   onSubmit: LoginFormOnSubmit;
 }

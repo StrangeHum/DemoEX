@@ -25,17 +25,9 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   @ApiBody({ type: authDataPassword })
-  async loginFoo(@Request() req, @Response() res: Res) {
+  async login(@Request() req, @Response() res: Res) {
     const user = await this.authService.login(req.user);
     res.status(200).send(user);
-  }
-
-  @Get('jwt')
-  @UseGuards(JwtAuthGuard)
-  @ApiBody({ type: authDataJWT })
-  async authJWT(@Request() req: { token: string; user: any }) {
-    const data = req.user;
-    return data;
   }
 
   @Post('refresh')

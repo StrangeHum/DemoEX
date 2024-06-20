@@ -34,7 +34,7 @@ export class AuthService {
       refreshToken: this.jwtService.sign({ id }, { expiresIn: '7d' }),
     };
   }
-  //TODO: Изменить обновление токена
+  //TODO: Обьявить переменную для хранения данных в токене
   async refreshToken(user: UserModel): Promise<responseRefreshedAccessToken> {
     const payload: dataOnToken = {
       id: user.id,

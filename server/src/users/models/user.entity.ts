@@ -20,7 +20,7 @@ export class UserModel extends Model<UserModel> {
   @Column surname: string;
 
   @HasOne(() => UserAuthModel)
-  @ApiHideProperty() //TODO: Если что-то не так, удалить это)
+  @ApiHideProperty()
   userAuthData: UserAuthModel;
 
   @Column

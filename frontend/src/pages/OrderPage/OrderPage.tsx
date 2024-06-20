@@ -8,6 +8,7 @@ import {
 } from "@src/redux/api/userOrders.api";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import styles from "./OrderPage.module.scss"; // SCSS module
+import { FileUploadComponent } from "@src/components/FileUploadComponent";
 
 export const OrderPage = () => {
   const { id } = useParams();
@@ -44,11 +45,13 @@ export const OrderPage = () => {
       <Typography variant="h6">Адрес: {order.address}</Typography>
       <Typography variant="h6">Статус: {order.status.title}</Typography>
       <Typography variant="h5">Файлы</Typography>
-      {order.files &&
+      {(order.files &&
         order.files.map((file) => (
           <FileComponent key={file.filename} file={file} />
-        ))}
-      Не прикреплены
+        ))) ||
+        "Не прикреплены"}
+
+      <FileUploadComponent orderId={id} />
     </Box>
   );
 };

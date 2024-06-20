@@ -72,18 +72,14 @@ export class OrdersController {
     @UploadedFile() file,
     @Request() req: UploadFileDTO,
   ) {
-    console.log(file);
-    // const data: UploadFileDTO = {
-    //   file: file,
-    //   orderId: 7,
-    //   user: req.user,
-    // };
-    // console.log(data);
+    const data: UploadFileDTO = {
+      file: file,
+      orderId: 14,
+      user: req.user,
+    };
+    const image = await this.orderService.uploadFile(data);
 
-    // const image = await this.orderService.uploadFile(data);
-    // console.log(image);
-
-    return 'image';
+    return image;
   }
 
   @Get('file/:id')
@@ -108,30 +104,4 @@ export class OrdersController {
   async getOrderByID(@Param('id') id: number): Promise<any> {
     return this.orderService.getOrderByID(id);
   }
-
-  // @Get(':id/files')
-  // async getOrderFiles(@Param('id') id: string, @Res() res: Response) {
-  //   const files = await this.orderService.getOrderFiles(+id);
-
-  //   if (files.length === 0) {
-  //     res.status(404).send('No files found for this order');
-  //     return;
-  //   }
-
-  //   const archive = archiver('zip', {
-  //     zlib: { level: 9 } // Sets the compression level.
-  //   });
-
-  //   res.attachment(`order-${id}-files.zip`);
-  //   archive.pipe(res);
-
-  //   files.forEach(file => {
-  //     const filePath = file.path;
-  //     if (fs.existsSync(filePath)) {
-  //       archive.file(filePath, { name: file.filename });
-  //     }
-  //   });
-
-  //   await archive.finalize();
-  // }
 }
