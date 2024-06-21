@@ -35,6 +35,9 @@ export const Header = () => {
         {/* <NavLinkItem to="/">Home</NavLinkItem> */}
         {user?.firstName && <NavLinkItem to="/profile">Профиль</NavLinkItem>}
         {user?.firstName && <NavLinkItem to="/orders">Заявления</NavLinkItem>}
+        {user?.firstName && (
+          <NavLinkItem to="/createorder">Создать заявление</NavLinkItem>
+        )}
 
         {user ? (
           <button onClick={handleLogout} className={styles.navButton}>

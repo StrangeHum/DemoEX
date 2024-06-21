@@ -8,7 +8,7 @@ import { selectAccessToken } from "@src/redux/auth/authSlice";
 export type FileUploadComponentProps = { orderId: string };
 
 export const FileUploadComponent = ({ orderId }: FileUploadComponentProps) => {
-  const selector = useSelector(selectAccessToken);
+  const accessToken = useSelector(selectAccessToken);
   const [files, setFiles] = useState([]);
   const [uploadFile, { isLoading, error }] = useUploadFileMutation();
 
@@ -34,14 +34,14 @@ export const FileUploadComponent = ({ orderId }: FileUploadComponentProps) => {
     const options = {
       method: "POST",
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4MTg0OTE2LCJleHAiOjE3MTgyNzEzMTZ9.SAilplHWgkuEAGTGxG0LMx0Iq_rwnxlko2ZVGAgigKc",
+        Authorization: `Bearer ${accessToken}`,
       },
     };
 
     options.body = formData;
 
-    fetch("http://localhost:3000/orders/up", options)
+    // await uploadFile(formData);
+    fetch("http://localhost:3000/orders/uploadFile", options)
       .then((response) => console.log("получен ответ"))
       .catch((e) => console.log("err"));
   };

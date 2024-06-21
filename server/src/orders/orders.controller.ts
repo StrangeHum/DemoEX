@@ -63,7 +63,7 @@ export class OrdersController {
           cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
-      limits: { fileSize: 50 * 1024 * 1024 }, //лимит размера файла до 50MB
+      // limits: { fileSize: 50 * 1024 * 1024 }, //лимит размера файла до 50MB
     }),
   )
   @ApiBody({ type: UploadFileDTO })
@@ -77,9 +77,11 @@ export class OrdersController {
       orderId: 14,
       user: req.user,
     };
-    const image = await this.orderService.uploadFile(data);
+    // const image = await this.orderService.uploadFile(data);
 
-    return image;
+    console.log(data);
+
+    return data;
   }
 
   @Get('file/:id')

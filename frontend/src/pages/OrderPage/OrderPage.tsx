@@ -9,6 +9,7 @@ import {
 import { Box, Typography, CircularProgress } from "@mui/material";
 import styles from "./OrderPage.module.scss"; // SCSS module
 import { FileUploadComponent } from "@src/components/FileUploadComponent";
+import { FetchImage, FileDisplay } from "@components/FetchImage/FetchImage";
 
 export const OrderPage = () => {
   const { id } = useParams();
@@ -45,13 +46,13 @@ export const OrderPage = () => {
       <Typography variant="h6">Адрес: {order.address}</Typography>
       <Typography variant="h6">Статус: {order.status.title}</Typography>
       <Typography variant="h5">Файлы</Typography>
-      {(order.files &&
+      {/* {(order.files &&
         order.files.map((file) => (
           <FileComponent key={file.filename} file={file} />
         ))) ||
-        "Не прикреплены"}
-
-      <FileUploadComponent orderId={id} />
+        "Не прикреплены"} */}
+      <FileDisplay fileId={4} />
+      {/* <FileUploadComponent orderId={id} /> */}
     </Box>
   );
 };
