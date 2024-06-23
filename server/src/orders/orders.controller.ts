@@ -77,9 +77,8 @@ export class OrdersController {
       orderId: 14,
       user: req.user,
     };
-    // const image = await this.orderService.uploadFile(data);
 
-    console.log(data);
+    const image = await this.orderService.uploadFile(data);
 
     return data;
   }

@@ -18,18 +18,8 @@ export const FileUploadComponent = ({ orderId }: FileUploadComponentProps) => {
 
   const handleUpload = async () => {
     const formData = new FormData();
-    // // formData.append("orderId", orderId);
-    formData.append("file", files[0]);
-    // // for (let file of files) {
-    // //   formData.append("file", file);
-    // // }
-    // await uploadFile(formData);
 
-    // const form = new FormData();
-    // form.append(
-    //   "file",
-    //   "D:\\Загрузки\\Img\\9aaa8840d49f2e2600d15aaac17332eb.jpg"
-    // );
+    formData.append("file", files[0]);
 
     const options = {
       method: "POST",
