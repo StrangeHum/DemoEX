@@ -100,4 +100,23 @@ export class OrdersService {
 
     return order.files;
   }
+  async getOrdersByStatus(): Promise<OrderModel[]> {
+    const order = await this.orderModel.findAll({
+      include: [FileModel, StatusOrderModel],
+      where: [
+        {
+          statusId: 1,
+        },
+      ],
+    });
+
+    if (!order) {
+      throw new Error('Order not found');
+    }
+
+    return order;
+  }
+  async getStatusListOrders(): Promise<StatusOrderModel[]> {
+    return this.statusOrderModel.findAll();
+  }
 }

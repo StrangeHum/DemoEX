@@ -23,6 +23,7 @@ import { authDataJWT } from 'src/auth/dto/authDataJWT.dto';
 import { UploadFileDTO } from './dto/uploadFile.dto';
 import { userDataFromToken } from 'src/types/types';
 import { OrderModel } from './models/order.entity';
+import { StatusOrderModel } from './models/status-order.entity';
 
 @Controller('orders')
 @ApiTags('orders')
@@ -41,18 +42,8 @@ export class OrdersController {
   }
 
   @Post('create')
-  @ApiBody({ type: authDataJWT })
-  async createOrder(
-    @Body() body: createOrderDTO,
-    @Request() req: userDataFromToken,
-  ) {
-    const { user } = req;
-    return this.orderService.create(body, { id: user.id });
-  }
-
-  @Post('uploadFile')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FilesInterceptor('files', 10, {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -66,21 +57,29 @@ export class OrdersController {
       // limits: { fileSize: 50 * 1024 * 1024 }, //лимит размера файла до 50MB
     }),
   )
-  @ApiBody({ type: UploadFileDTO })
-  async uploadFile(
-    @Body() body,
-    @UploadedFile() file,
-    @Request() req: UploadFileDTO,
+  @ApiBody({ type: authDataJWT })
+  async createOrderWithSomeFiles(
+    @Body() body: createOrderDTO,
+    @UploadedFiles() files,
+    @Request() req: userDataFromToken,
   ) {
-    const data: UploadFileDTO = {
-      file: file,
-      orderId: 14,
-      user: req.user,
-    };
+    const { user } = req;
 
-    const image = await this.orderService.uploadFile(data);
+    const fileUploadResults = [];
 
-    return data;
+    const order = await this.orderService.create(body, { id: user.id });
+
+    for (const file of files) {
+      const data: UploadFileDTO = {
+        file: file,
+        orderId: order.id,
+        user,
+      };
+
+      fileUploadResults.push(await this.orderService.uploadFile(data)); //await this.orderService.uploadFile(data)
+    }
+
+    return { order, fileUploadResults };
   }
 
   @Get('file/:id')
@@ -96,13 +95,40 @@ export class OrdersController {
     }
   }
 
+  //Ниже функционал администратора, но его не завилили
+  @Get('allorders')
+  //TODO: Сдесь должна быть проверка на администратора, но этого не будет
+  async getAllOrdersWithSomeStatus(): Promise<OrderModel[]> {
+    return this.orderService.getOrdersByStatus();
+  }
+
+  @Post('set')
+  //TODO: Сдесь должна быть проверка на администратора, но этого не будет
+  async setStatusOrder(
+    @Body() Body: { statusId: number; orderId: number },
+  ): Promise<OrderModel> {
+    const order = await this.orderService.getOrderByID(Body.orderId);
+
+    order.statusId = Body.statusId;
+
+    await order.save();
+    //FIXME: Статус не обновляется в поле status, однако идёт обновление statusId
+
+    return order;
+  }
+
+  @Get('statuslist')
+  async getAllStatus(): Promise<StatusOrderModel[]> {
+    return await this.orderService.getStatusListOrders();
+  }
+
   @Get(':id/filesData')
   async getOrderFilesData(@Param('id') id: number): Promise<any> {
     return this.orderService.getOrderFiles(id);
   }
 
   @Get(':id')
-  async getOrderByID(@Param('id') id: number): Promise<any> {
+  async getOrderByID(@Param('id') id: number): Promise<OrderModel> {
     return this.orderService.getOrderByID(id);
   }
 }

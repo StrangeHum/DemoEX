@@ -25,16 +25,12 @@ export class UsersService {
     });
     return userData;
   }
-  async findAllData(): Promise<any> {
-    var user = await this.userModel.findAll({ include: [UserAuthModel] });
+  async getAllUsers(): Promise<UserModel[]> {
+    var user = await this.userModel.findAll();
 
-    var userAuthData = await this.userAuthModel.findAll({
-      include: [UserModel],
-    });
-
-    return userAuthData;
+    return user;
   }
-  async findOne(id: number): Promise<UserModel> {
+  async getOneByID(id: number): Promise<UserModel> {
     return this.userModel.findOne({
       where: {
         id,
@@ -45,7 +41,7 @@ export class UsersService {
     return this.userModel.findOne(config);
   }
   async remove(id: number): Promise<void> {
-    const user = await this.findOne(id);
+    const user = await this.getOneByID(id);
     await user.destroy();
   }
 
