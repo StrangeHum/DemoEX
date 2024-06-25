@@ -4,11 +4,10 @@ import { useSelector } from "react-redux";
 import {
   useUserOrdersQuery,
   useGetFileQuery,
-  DataFileOrder,
 } from "@src/redux/api/userOrders.api";
+import { DataFileOrder } from "@src/types";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import styles from "./OrderPage.module.scss"; // SCSS module
-import { FileUploadComponent } from "@src/components/FileUploadComponent";
 import { FetchImage, FileDisplay } from "@components/FetchImage/FetchImage";
 
 export const OrderPage = () => {
@@ -52,7 +51,6 @@ export const OrderPage = () => {
         ))) ||
         "Не прикреплены"} */}
       <FileDisplay fileId={4} />
-      {/* <FileUploadComponent orderId={id} /> */}
     </Box>
   );
 };

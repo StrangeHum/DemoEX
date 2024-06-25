@@ -1,7 +1,7 @@
 import { YMaps, Map, Placemark } from "react-yandex-maps";
 import React, { useEffect, useState } from "react";
 import styles from "./Heatmap.module.scss";
-import { OrderType } from "@src/redux/api/userOrders.api";
+import { OrderType } from "@src/types";
 
 const moscovCoords = [55.751244, 37.618423];
 

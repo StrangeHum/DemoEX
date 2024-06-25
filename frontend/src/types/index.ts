@@ -1,3 +1,5 @@
+import { DataFileOrder } from ".";
+
 export type User = {
   id: number;
   firstName: string;
@@ -19,3 +21,24 @@ export enum UserRole {
   Moderator = "Moderator",
   Admin = "Admin",
 }
+export type OrderType = {
+  id: number;
+  userId: number;
+  statusId: number;
+  status: OrderStatus;
+  description: string;
+  numberCar: string;
+  address: string;
+  files: DataFileOrder[];
+};
+export type OrderStatus = {
+  id: number;
+  title: string;
+};
+export type DataFileOrder = {
+  id: number;
+  filename: string;
+  path: string;
+  orderId: number;
+  order: string;
+};

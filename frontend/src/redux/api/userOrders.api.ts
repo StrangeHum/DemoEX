@@ -1,28 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseQuery, baseQueryRefreshToken } from "./baseQuery";
 import { RootStore } from "../store";
-
-export type DataFileOrder = {
-  id: number;
-  filename: string;
-  path: string;
-  orderId: number;
-  order: string;
-};
-
-export type OrderType = {
-  id: number;
-  userId: number;
-  statusId: number;
-  status: {
-    id: number;
-    title: string;
-  };
-  description: string;
-  numberCar: string;
-  address: string;
-  files: DataFileOrder[];
-};
+import { OrderType } from "@src/types";
 
 export type UploadFileDTO = {
   orderId: number;

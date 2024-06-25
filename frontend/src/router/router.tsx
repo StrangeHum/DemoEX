@@ -8,6 +8,8 @@ import { Profile } from "@src/pages/Profile";
 import RegisterComponent from "@src/pages/SigninNeuron";
 // import { Signin } from "@src/pages/Signin";
 import { UserOrders } from "@src/pages/UserOrders/UserOrders";
+import OrdersPanelPage from "@src/pages/adminPanels/ordersPanel";
+import UsersPanelPage from "@src/pages/adminPanels/usersPanel";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -41,6 +43,14 @@ export const router = createBrowserRouter([
             element: <OrderPage />,
           },
         ],
+      },
+      {
+        path: "adminorders",
+        element: <OrdersPanelPage />,
+      },
+      {
+        path: "adminusers",
+        element: <UsersPanelPage />,
       },
       {
         path: "createorder",
