@@ -53,6 +53,15 @@ export const apiOrders = createApi({
       },
       invalidatesTags: ["Orders"],
     }),
+    createOrder: builder.mutation<any, FormData>({
+      query: (data) => ({
+        url: `/orders/create`,
+        method: "post",
+        body: { ...data },
+        // formData: true,
+      }),
+      invalidatesTags: ["Orders"],
+    }),
   }),
 });
 
@@ -61,4 +70,5 @@ export const {
   useOrderDataQuery,
   useUploadFileMutation,
   useGetFileQuery,
+  useCreateOrderMutation,
 } = apiOrders;

@@ -6,8 +6,10 @@ import {
   updateAccessToken,
 } from "../auth/authSlice";
 
+export const baseUrl = "http://localhost:3000/";
+
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3000/",//http://localhost:3000/
+  baseUrl, //http://localhost:3000/
   prepareHeaders: (headers, { getState }) => {
     // headers.set("Content-Type", "application/json");
 

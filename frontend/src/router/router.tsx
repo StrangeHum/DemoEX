@@ -1,5 +1,6 @@
 import { LoginPage } from "@src/pages";
 import CreateOrderPage from "@src/pages/CreateOrderPage";
+import FormComponent from "@src/pages/CreateOrderSecond/FormComponent";
 import { ErrorPage } from "@src/pages/ErrorPage";
 import { Home } from "@src/pages/Home";
 import Layout from "@src/pages/Layout";
@@ -54,7 +55,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "createorder",
-        element: <CreateOrderPage />,
+        element: <FormComponent />,
       },
       {
         path: "*",

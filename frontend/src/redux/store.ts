@@ -7,6 +7,7 @@ import persistConfig from "./lib/persistConfig";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
 import { authApi } from "./api/auth.api";
 import { adminApi } from "./api/admin/admin.api";
+import fileSlice from "./fileSlice";
 
 const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   [apiOrders.reducerPath]: apiOrders.reducer,
   [adminApi.reducerPath]: adminApi.reducer,
   auth: authSlice,
+  files: fileSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -22,9 +24,10 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ["persist/PERSIST"],
-      },
+      serializableCheck: false,
+      // serializableCheck: {
+      //   ignoredActions: ["persist/PERSIST"],
+      // },
     }).concat(
       authApi.middleware,
       api.middleware,
